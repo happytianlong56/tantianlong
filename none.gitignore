@@ -1,0 +1,8 @@
+#忽略根目录下bin文件夹的所有文件
+/bin/*
+#忽略所有.class文件
+*.class
+#不要忽略根目录下bin文件夹中.java文件
+!/bin/*.java
+#忽略student04.sql文件
+student04.sql
