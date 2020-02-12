@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>留言板</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" href="main-2431ab8715.css">
+</head>
+<body>
+<div class="box">
+	<div class="all">
+		<div class="title">
+			<span class="mesee">我来说两句</span>
+			<span class="canyu" id="cc">还可输入<span id="num">200</span>字</span>
+		</div>
+		<div class="content"><textarea id="text" class="text" name="" placeholder="来说两句吧..." onfocus="cleartxt(this)"></textarea>
+			<input type="button" id="btt" class="denglu" value="登录并发表">
+		
+
+			</div>
+		<div class="footer"><a href="#">搜狐“我来说两句”用户公约</a></div>
+	</div>
+	<div class="pinglun">
+		<p class="new">最新评论</p>
+		<ul class="ul1" id="ul1">
+			<!-- <li class="li1">
+				<img src="image/touxiang01.jpeg">
+				<div class="right_ctt" id="div1">
+				<p class="llbb">零零888</p>
+				<p class="xzx">习主席带领我们前进</p>
+				<p class="bott"><span class="gg">刚刚</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">0</span></p>
+				</div>
+			</li>
+			<li class="li1">
+				<img src="image/touxiang02.jpeg">
+				<div class="right_ctt">
+				<p class="llbb">可乐爷爷6207856</p>
+				<p class="xzx">习书记说的千真万确</p>
+				<p class="bott"><span class="gg">55分钟前</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">0</span></p>
+				</div>
+			</li>
+			<li class="li1">
+				<img src="image/touxiang03.jpeg">
+				<div class="right_ctt">
+				<p class="llbb">狐狐网友</p>
+				<p class="xzx">总书记的思想带动全世界人名走向幸福</p>
+				<p class="bott"><span class="gg">58分钟前</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">0</span></p>
+				</div>
+			</li>
+			<li class="li1">
+				<img src="image/touxaing04.jpeg">
+				<div class="right_ctt">
+				<p class="llbb">小狐狸5579097</p>
+				<p class="xzx">习主席讲话真深刻！非常有意义</p>
+				<p class="bott"><span class="gg">2月19日 15:46</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">2</span></p>
+				</div>
+			</li> -->
+		</ul>
+		<div class="more" style="width:100%;height:50px;font:24px/50px '微软雅黑'; text-align: center;cursor:pointer">加载更多...</div>
+	</div>
+</div>
+<!-- 用户登录框 -->
+<div data-role="body-shade" class="body-shade" style="display: none;"></div>
+<div data-role="login-pop" class="pop-layer login-pop" style="display: none;" data-spm="huyou">
+    <a href="javascript:void(0)" data-role="login-close" class="close-pop" data-spm-data="1">
+        <i class="icon-close"></i>
+    </a>
+    <div class="title">
+        <ul>
+            <li data-role="userlogin-bar" class="cur" data-spm-acode="8081" data-spm-data="2">账号密码登录</li>
+            <li data-role="mobilelogin-bar" class="">手机动态码登录</li>
+        </ul>
+    </div>
+    <div class="err-info" style="display:none">请输入正确的登录账号或密码</div>
+    <!-- 用户名登陆 -->
+    <div data-role="user-box" class="login user-login" style="display: block;">
+        <ul>
+            <li>
+            	<input type="text" data-role="user-passport" class="user-input" placeholder="邮箱/手机号">
+            </li>
+                <span style="position:absolute;width:100px;height:30px;top:100px;"></span>
+            <li>
+            	<input type="password" value="" data-role="user-password" class="user-password" placeholder="请输入密码">
+             <li class="short" data-role="user-captcha" style="display:none">
+                <input type="text" value="" class="password-input" placeholder="验证码">
+                <img class="captcha-pic" src="">
+             </li>
+            </li>
+             <span style="position:absolute;width:100px;height:30px;top:172px;"></span>
+
+        </ul>
+
+        <div class="auto-login" ><span data-role="remember" class="radio-btn"><em class="radio-icon radio-icon-sel"><input type="radio"></em>下次自动登录</span><a href="" target="_blank" class="back-link" >找回密码</a></div>
+        <div class="login-btn"><input data-role="submit-user" type="button" class="login-bn" value="登录"></div>
+        <div class="login-oper"><a href="" target="_blank" class="reg-link" >注册</a></div>
+    </div>
+
+
+    <!-- 用户图像选择 -->
+    <div class="third clear">
+        <ul>
+
+            <li class="qq">
+                <a href="#" style="background-image: url(./image/touxiang01.jpeg);"></a>
+            </li>
+            <li class="sinat">
+                <a href="#" style="background-image: url(./image/touxiang02.jpeg);"></a>
+            </li>
+            <li class="wx">
+               <a href="#" style="background-image: url(./image/touxiang03.jpeg);"></a>
+            </li>
+            <li class="oth">
+                <a href="#" style="background-image: url(./image/touxiang04.jpeg);"></a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery.min.js"></script>
+<script>
+ 
+var btt=document.getElementById('btt');
+var text=document.getElementById('text');
+var ul1=document.getElementById('ul1');
+var div1=document.getElementById('div1');
+var num=document.getElementById('num');
+var timer=null;
+var cc=document.getElementById('cc');
+btt.onclick=function(){
+	//获取用户的留言内容
+	var liuyanTxt=text.value;
+	if (liuyanTxt=="") {
+		$("div[data-role='body-shade']").show();
+		$("div[data-role='login-pop']").show();
+	}else{	
+		var txt1=document.createTextNode(liuyanTxt);
+		var txt2=document.createTextNode("零零888");
+		var txt4=document.createTextNode("刚刚");
+		var txt5=document.createTextNode("删除");
+		var li1=document.createElement("li");
+		li1.setAttribute("class","li1");
+		var div1=document.createElement("div");
+		div1.setAttribute("class","right_ctt");
+		//头像
+		var img1=document.createElement("img");
+		img1.setAttribute("src","image/touxiang01.jpeg")		
+		//p1用户昵称
+		var p2=document.createElement("p");
+		p2.appendChild(txt2);
+		p2.setAttribute("class","llbb");
+		//p2用户留言
+		var p1=document.createElement("p");
+		p1.appendChild(txt1);
+		p1.setAttribute("class","xzx");		
+		//删除点赞
+		var p3=document.createElement("p");
+		p3.setAttribute("class","bott");
+		var span1=document.createElement("span");
+		span1.appendChild(txt4);
+		span1.setAttribute("class","gg");
+		var span2=document.createElement("span");
+		span2.appendChild(txt5);
+		span2.setAttribute("class","delete");
+		span2.setAttribute("onclick","del(this)");
+		//span2.onclick="del(this)";
+		//span3 点赞
+		var span3=document.createElement("span");
+		span3.setAttribute("class","zan");
+		var img2=document.createElement("img");
+		img2.setAttribute("src","image/zan.png");
+		span3.appendChild(img2);
+		p3.appendChild(span1);
+		p3.appendChild(span2);
+		p3.appendChild(span3);
+		li1.appendChild(img1);
+		
+		div1.appendChild(p2);
+		div1.appendChild(p1);
+		div1.appendChild(p3);
+		li1.appendChild(div1);
+		ul1.insertBefore(li1,ul1.firstElementChild)
+	}
+
+}
+text.onfocus=function(){
+	timer=setInterval(function(){
+		var str=text.value;//获取用户输入的文字
+		if (str.length<200) {
+			//提示用户还可以输入多少字
+			console.log("还可以输入"+(200-str.length)+"字");
+			/*var txt1=document.createTextNode(200-str.length);//新文本节点
+			var txt2=cc.firstElementChild.firstChild;//老文本节点
+			cc.firstElementChild.replaceChild(txt1,txt2)*/
+			cc.innerHTML="还可输入<span>"+(200-str.length)+"<span>字";
+		}else if(str.length>200){
+			cc.innerHTML="已超出<span>"+(str.length-200)+"</span>字";
+		}
+	},500)
+}
+//失去焦点时清除定时器
+text.onblur=function(){
+	clearInterval(timer);
+}
+//删除
+function del(that){
+	//找到删除按钮的父元素即<li>标签
+	ul1.removeChild(that.parentNode.parentNode.parentNode);
+}
+
+
+function cleartxt(that){
+	if(that.placeholder=='来说两句吧...'){
+		that.placeholder='';
+	}
+}
+  // 点击关闭按钮清除弹框
+  $(".icon-close").on("click",function(){
+  	$(".pop-layer,.body-shade").css("display","none");
+  })
+ //请求数据库中的留言内容
+ $.ajax({
+ 	url:"api.php?action=comment",
+ 	type:"post",
+ 	dataType:"json",
+ 	beforeSend:function(){
+
+ 	},
+ 	success:function(data){
+ 	//渲染留言
+ 	console.log(data);
+ 	var str = "";
+ 	$.each(data.data,function(i,k){
+
+ 	str += " <li class='li1'><img src='image/touxiang03.jpeg'><div class='right_ctt'><p class='llbb'>"+k.nickname+"</p><p class='xzx'>"+k.content+"</p><p class='bott'><span class='gg'>58分钟前</span><span class='delete'>删除</span><span class='zan'><img src='image/zan.png'>0</span></p></div></li>"
+
+ 	})
+ 	$("#ul1").html(str);
+ 	var num = 2;
+ 	$("#ul1").children("li:gt("+num+")").hide();
+
+ 	
+ 	$(".more").on("click",function(){
+ 		 console.log(num);
+ 		 num ++ ;
+ 		$("#ul1").children("li:lt("+num+")").show().children("li:gt("+num+")").hide();
+ 	})
+ 	}
+ });
+    
+
+
+ 	//登录验证,判断是否存在该用户
+ 	$(".login-bn").on("click",function(event){
+    event.preventDefault();
+    $.ajax({
+        url:"api.php?action=login",
+        type:"post",
+        dataType:"json",
+        // data:"email="+$(".user-input").val()+"&password="+$(".user-password").val(),
+        data:"email="+$(".user-input").val()+"&password="+$(".user-password").val(),
+        beforeSend:function(){
+        },
+        success:function(data){
+        	console.log(data);
+        	if(data.code == 200){
+        		//如果跳转html,就把data中的email和nickname生成cookie
+				var  tt = new Date();
+				tt.setTime(tt.getTime()+3*30*24*60*60*1000);//tt为30天后的未来时间
+				document.cookie = "id="+data.data.id+"expires="+tt.toGMTString();
+				document.cookie = "name="+data.data.email+";expires="+tt.toGMTString();
+				document.cookie = "nickname="+data.data.nickname+";expires="+tt.toGMTString();
+			//登录成功后，登录框消失
+			//$(".pop-layer,.login-pop").animate({"display":"none"},200);	
+			$(".pop-layer,.login-pop,.body-shade").css("display","none");
+			//再次发送ajax请求
+			$("#btt").on("click",function(){
+				event.preventDefault();
+				$.ajax({
+					url:"api.php?action=publish",
+					type:"post",
+					dataType:"json",
+					data:"content="+$("#text").val()+"&user_id="+data.data.user_id,
+					beforeSend:function(){
+
+					},
+					success:function(data){
+						
+					}
+				});
+			})	
+
+         }
+        else if(data.code == 20004){
+        		$(".user-input").on("blur",function(){
+        			$(".user-input").parent().next().html("");
+        		})
+        		$(".user-input").parent().next().html(data.msg).css("color","red");
+
+        }else if(data.code==20001){
+        		$(".password-input").on("blur",function(){
+        			$(".password-input").parent().next().html("");
+        		})
+        	    $(".password-input").parent().next().html(data.msg).css("color","red");
+        }
+    }
+    });
+})
+
+
+
+
+
+
+
+
+
+</script>

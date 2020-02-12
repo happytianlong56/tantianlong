@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>年度最受关注案例投票</title>
+    <meta name="description" content="2017拉姆•查兰管理实践奖">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <link rel="stylesheet" href="css/wap.css"/>
+</head>
+<body>
+
+<div class="wrapper" id="main">
+    <!-- 投资候选人 start-->
+    <div class="section" id="investors">
+        <h2 class="p-tt" style="background-image: url(./images/tt01.png);">投资候选人</h2>
+        <div class="investors cont" id="candidates">
+        <ul class="list clearfix">
+		<!-- 候选人列表  -->
+           <!--  <li class="citem js-vote-item" id="6">
+                <div class="item-poster js-intro-item">
+                    <img class="lazy" src="upload/20170919104140_kdE1.jpg">
+                    <div class="caption">
+                        <p class="txt-name">苏国新</p>
+                        <p class="txt-position">中信集团业务协同部总经理</p>
+                    </div>
+                 </div>  
+                    <div class="vote js-vote-btn" data-id="6" data-switch="off">
+                        <span class="icon-zan">X</span>
+                        <span class="num">21316</span>
+                    </div>
+            </li>   
+
+
+            <li class="citem js-vote-item" id="6">
+                <div class="item-poster js-intro-item">
+                    <img class="lazy" src="upload/20170919104140_kdE1.jpg">
+                    <div class="caption">
+                        <p class="txt-name">苏国新</p>
+                        <p class="txt-position">中信集团业务协同部总经理</p>
+                    </div>
+                 </div>  
+                    <div class="vote js-vote-btn" data-id="6" data-switch="off">
+                        <span class="icon-zan">X</span>
+                        <span class="num">21316</span>
+                    </div>
+
+            </li> -->
+        </ul>
+    </div>
+    </div>
+    <!-- 投资候选人 end-->
+
+<!--SHARE POPUP start-->
+<div class="share-popup js-popup" id="share_popup" style="display: none;">
+    <span class="btn-close"></span>
+    <div class="pop-head"></div>
+    <div class="pop-main">
+        点赞成功！感谢您的一票！
+    </div>
+    <div class="pop-foot"><span class="submit-code btn-ok">支持</span></div>
+</div>
+<!--SHARE POPUP end-->
+</body></html>
+<script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/artTemplate.js/3.0.1/template.js"></script>
+<script>
+console.log($);
+window.onload = function(){
+    $.ajax({
+        url:"http://localhost:8082/vote-project/api.php?action=candidate",
+        type:"get",
+        dataType:"json",
+        beforeSend:function(){
+        },
+        success:function(data,textStatus){
+         console.log(data);
+         var JSONdata = data;
+         $.get("template.html",function(data,textStatus){
+                //编译模板
+                var  render = template.compile(data);
+                var str = render(JSONdata);
+                ////将生成的html片段添加到网页上
+                $(".list").html(str);
+                //投票
+                $("span.icon-zan").on("click",function(){
+                    var icon_zans = document.querySelectorAll("span.icon-zan");
+                    console.log(icon_zans);
+                    for (var i = 0; i < icon_zans.length; i++) {
+                        var index = $(this).index(i);
+                        console.log(index);
+                        
+                    }
+                    $.ajax({
+                        url:"http://localhost:8082/vote-project/api.php?action=toupiao",
+                        // data:"num = "+data[].votenum +","
+                    })        
+                        
+
+                         })
+            })
+
+
+    } ,
+    error:function(XMLHttpRequest,textStatus,errorThrown){
+        
+    }    
+    })
+    //点赞投票
+    
+
+ }
+</script>

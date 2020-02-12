@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录页</title>
+	 <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+   
+     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+     <!-- <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js">
+</script> -->
+  
+     <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+     <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  
+     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+     <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+ <style>
+    body{
+            background-image:url('../studentdbs2.0/vote-project/images/01.jpg'); 
+            background-repeat: no-repeat;
+            background-size:100% 100%;
+         }
+       .wrap{
+			width:800px;
+			height:550px;
+			margin:200px 410px;
+			overflow: hidden;
+		}
+		/*用户注册与登录按钮*/
+		.botton{
+			width: 200px;
+			height:50px;
+		    margin: 20px 0px 0px 275px ;
+		}
+    	/*表单部分*/
+    	form{
+    		height: 500px;
+    		padding-left:120px;
+    	}
+    	label{
+    		color:#fff;
+    	}
+</style>
+<body>
+	<div class="wrap">
+	<div class="botton" >
+			<a href="sign.html" class="an_niu btn btn-primary" >用户注册</a>
+			<a href="login.html" class="an_niu btn btn-primary" ">用户登录</a>
+	</div>
+	<!-- 注册表单 -->
+	<form id="form1" >
+		<div class="form-group">
+			<label for="email" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
+			<input type="text" name="email" id="email" class="form-control" style="display: inline-block; width:200px" >
+			<span></span>
+		</div>
+		<div class="form-group">
+			<label for="user" style="display: inline-block;width:150px;text-align: right; ">用户名：</label>
+			<input type="text" name="user" id="user"  class="form-control" style="display: inline-block; width:200px" >
+			<span></span>
+		</div>
+		<div class="form-group">
+			<label for="password" style="display: inline-block;width:150px;text-align: right; ">密码：</label>
+			<input type="password" name="password" id="password" class="form-control" style="display: inline-block ;width:200px" >
+			<span></span>
+		</div>
+		<div class="form-group">
+			<label for="repassword" style="display: inline-block;width:150px;text-align: right; ">重复密码：</label>
+			<input type="password" name="repassword" id="repassword" class="form-control" style="display: inline-block; width:200px" >
+			<span></span>
+		</div>
+		<div class="form-group">
+			<label for="verify" style="display: inline-block;width:150px;text-align: right; ">验证码：</label>
+			<input type="text" id="verify" name="verify" class="form-control" style="display: inline-block; width:200px" >
+			<span id="verify_code" class="form-control" style="display: inline-block; width:100px; cursor:pointer; text-align: center;">验证码</span>
+			<span></span>
+		</div>
+		<div class="form-group" >
+			<label for="Prompt" style="display: inline-block;width:150px;text-align: right; ">密码提示问题：</label>
+			<select name="Prompt" name="Prompt" id="Prompt" class="form-control" style="display: inline-block; width:200px"></select>
+			
+		</div>
+		<div class="form-group">
+			<label for="key" style="display: inline-block;width:150px;text-align: right; ">答案密码：</label>
+			<input type="text" name="key" id="key" class="form-control" style="display: inline-block; width:200px" >
+			<span></span>
+		</div>
+		<button type="submit" name="submit" class="btn btn-primary" style="margin-left:230px;">注册</button>
+		
+
+	</form>
+</div>
+</body>
+</html>
+<script>
+ var arr = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u",
+  "v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","l","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+ var arr1 = [];
+ function play(){
+ 	for (var i = 0; i < 4; i++) {
+ 		var random = Math.floor(Math.random()*arr.length);
+ 		str += arr[random] ;
+ 	}
+
+	 verify_code.innerHTML = str;
+	 console.log(str);
+ }
+verify_code.onclick = function(){
+	 str="";
+	
+	play();
+} 
+window.onload = function(){
+
+	$.ajax({
+		//请求私密问题接口
+		url:"api.php?action=getQuestion",
+		type:"get",
+		dataType:"json",
+		success:function(data,statusText){
+	
+			var str = "";
+			$.each(data.data,function(i,v){
+				str += "<option value="+v.id+">"+v.question+"</option>"
+			})
+			$("#Prompt").html(str);
+		}
+
+	})
+	// 判断邮箱格式是否正确，以及是否被注册过。
+	$("#email").on("blur",function(){
+		 console.log($(this).val().length);
+		var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+		if($(this).val().length==0){
+			$("#email").next().html("不能为空").css("color","red");
+		}else if(!reg.test($(this).val())){
+			$("#email").next().html("邮箱格式不正确").css("color","red");
+		}else{
+		$.ajax({
+			url:"api.php?action=checkemail&email="+$(this).val(),
+			type:"get",
+			dataType:"json",
+			beforeSend:function(){
+			   
+			},
+			success:function(data,statusText){
+				
+				if(data.code ==200){
+					$("#email").next().html(data.msg).css("color","green");
+				}else{
+					$("#email").next().html(data.msg);
+				}
+			}
+
+			})
+		}
+	})
+	//判断用户名是否正确
+
+	$("#user").on("blur",function(){
+	 var reg_user=/^[a-zA-Z]{1}([a-zA-Z0-9]|[._-]){3,15}$/;
+		var user_val = $(this).val();
+		if(reg_user.test(user_val)){
+			$(this).next().html(" ");
+		}else{
+			$(this).next().html(" 请输入有效的用户名").css("color","red");
+		}
+	})
+	//密码判断
+	$("#password").on("blur",function(){
+	var reg1=/^[a-z+A-Z+0-9+]{3,15}$/;
+		var psw_val = $(this).val();
+		if(reg1.test(psw_val)){
+			$(this).next().html(" ");
+		}else{
+			$(this).next().html("请输入有效的密码").css("color","red");
+		}
+	})
+	//密码确认
+	$("#repassword").on("blur",function(){
+		var psw_val = $("#password").val();
+		var repsw_val = $(this).val();
+		if(psw_val==repsw_val){
+			$(this).next().html(" ");
+		}else{
+			$(this).next().html("请输入,密码不一致").css("color","red");
+		}
+	})
+	//验证码验证
+	$("#verify").on("blur",function(){
+		var verify_code = $("#verify_code").text();
+		var verify = $(this).val();
+		console.log(verify_code);
+		console.log(verify);
+		if(verify_code==verify){
+			$(this).next().next().html(" ");
+		}else if(verify.length == 0){
+			$(this).next().next().html("请输入验证码 ").css("color","red");
+		}else{
+			$(this).next().next().html("验证码不一致").css("color","red");
+
+		}
+	})
+
+	$("button[type=submit]").on("click",function(event){
+  event.preventDefault();
+  $.ajax({
+   url:"api.php?action=sign",
+   type:"post",
+   dataType:"json",
+   data:$("#form1").serializeArray(),
+   beforeSend:function(){
+    //提交前检查是否为空
+    var $email = $("#email").val();
+    var $user = $("#user").val();
+    var $password = $("#password").val();
+    var $repassword = $("#repassword").val();
+    var $verify = $("#verify").val();
+    var $key = $("#key").val();
+    if($email.length==0&&$user.length==0&&$password.length==0&&$repassword.length==0&&$verify.length==0&&$key.length==0){
+    	alert("不能为空");
+    	return false;
+    }else{
+    	return true;
+    }
+
+   },
+   success:function(data){
+   	console.log(data);
+    if(data.code == 200){
+     window.location.href="login.html"
+    }else{
+
+    }
+   }
+  })
+ })
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+</script>

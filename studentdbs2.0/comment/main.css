@@ -1,0 +1,137 @@
+		.box{
+			width: 640px;
+			height: 640px;
+			/*background-color: yellow;*/
+			margin: 30px auto;
+		}
+		.all{
+			width: 640px;
+			height: 164px;
+			/*background-color: pink;*/	
+		}
+		.title{
+			width: 640px;
+			height: 42px;
+			/*background-color: blue;*/
+		}
+		.content{
+			width: 625px;
+			height: 110px;
+			border: 1px solid #B6B6B6;
+			/*background-color: yellow;*/
+			padding-top: 10px;
+			padding-left: 15px;
+			position: relative;
+		}
+		.footer{
+			width: 640px;
+			height: 40px;
+			/*background-color: red;*/
+		}
+		.mesee{
+			float: left;
+			font: 400 20px/42px "micsosoft yahei";
+		}
+		.canyu{
+			float: right;
+			font: 400 20px/42px "micsosoft yahei";
+		}
+		.canyu span{
+			color: red;
+		}
+		.footer a{
+			color: #C8C8C8;
+			font: 400 13px/40px "micsosoft yahei";
+			text-decoration: none;
+		}
+		.footer a:hover{
+			text-decoration: underline;
+		}
+		.text{
+			width: 613px;
+			height: 66px;
+			border: 1px solid white;
+			/*color: #C8C8C8;*/
+		}
+		.denglu{
+			width: 90px;
+			height: 37px;
+			border: 0;
+			background-color: red;
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			text-align: center;
+			font: 400 15px/37px "micsosoft yahei";
+			color: white;
+			cursor: pointer;
+		}
+		/*评论*/
+		ul{
+			margin: 0;
+			padding: 0;
+		}
+		 .pinglun{
+			width: 640px;
+			padding-top: 20px;
+		}
+		.new{
+			width: 640px;
+			height: 30px;
+			font: 400 15px/30px "micsosoft yahei";	
+		}
+		.ul1{
+			width: 640px;
+			border-top: 1px solid #B6B6B6;
+		}
+		.li1{
+			list-style: none;
+			width: 640px;
+			height: 80px;
+			border-bottom: 1px dotted #B6B6B6;	
+		}
+		.li1 img{
+			left: 20px;
+			border-radius: 100%;
+			width: 50px;
+			height: 50px;
+			float: left;
+			margin-top: 15px;
+			margin-left: 20px;
+		}
+		.right_ctt{
+			width: 560px;
+			padding-top: 15px;
+			margin-left: 80px;
+		}
+		.llbb{
+			width: 560px;
+			height: 13px;
+			color: red;
+			font: 400 13px/13px "micsosoft yahei";
+		}
+		.xzx{
+			font: 400 15px/22px "micsosoft yahei";
+		}
+		.bott{
+			font: 400 13px/20px "micsosoft yahei";
+			color: #7C7877;
+			width: 560px;
+			height: 20px;
+			/*background-color: pink;*/
+			position: relative;
+		}
+		.delete{
+			position: absolute;
+			right: 70px;
+			cursor: pointer;
+		}
+		.zan{
+			position: absolute;
+			right: 30px;
+		}
+		.zan img{
+			width: 16px;
+			height: 16px;
+			margin-top: 2px;
+		} 	

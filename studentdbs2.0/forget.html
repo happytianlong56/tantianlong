@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>登录页</title>
+	 <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+   
+     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  
+     <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+     <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  
+     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+     <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="botton" style="position: absolute;top:48px;left:42%;">
+			<a href="sign.html" class="an_niu btn btn-primary" >用户注册</a>
+			<a href="login.html" class="an_niu btn btn-primary" ">用户登录</a>
+	</div>
+	<!-- 登录表单 -->
+	<form action="" method="" style="width:800px;height:500px; margin-left:22%;margin-top:100px; border:1px solid blue; padding: 50px 0 0 150px;" >
+		<div class="form-group">
+			<label for="verify" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
+			<input type="text" id="user_email" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
+
+		</div>
+		<div class="form-group" >
+			<label for="Prompt" style="display: inline-block;width:150px;text-align: right; ">密码提示问题：</label>
+			<select name="" id="Prompt" class="form-control" style="display: inline-block; width:200px" autocomplete="off">
+				<option value="">你的小学在哪里上？</option>
+				<option value="">你最好朋友姓名？</option>
+				<option value="">你的父母的生日？</option>
+				<option value="">你的母亲的生日？</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="key" style="display: inline-block;width:150px;text-align: right; ">答案密码：</label>
+			<input type="text" id="key" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
+		</div>
+		<div class="form-group">
+			<label for="verify" style="display: inline-block;width:150px;text-align: right; ">验证码：</label>
+			<input type="text" id="verify" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
+			<span id="verify_code" class="form-control" style="display: inline-block; width:100px; cursor:pointer; text-align: center;">验证码</span>
+		</div>
+		<button type="submit" class="btn btn-primary" style="margin-left:170px; width:150px; text-align: center;">登  录</button>
+		
+
+	</form>
+</body>
+</html>
+<script>
+ var arr = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u",
+  "v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","l","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+ function play(){
+ 	str=""; //保存随机的字符串
+ 	for (var i = 0; i < 4; i++) {
+ 		var random = Math.floor(Math.random()*arr.length);
+ 		str += arr[random] + " ";
+ 	}
+	 verify_code.innerHTML = str;
+ }
+ // 点击验证码，进行切换。
+verify_code.onclick = function(){
+	
+	play();
+} 
+
+
+</script>
