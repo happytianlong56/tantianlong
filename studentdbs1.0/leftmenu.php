@@ -38,5 +38,13 @@
 				
 			</ul>
 		</li>
+		<li class="level1">
+			<a href="#none">会员管理</a>
+			<ul class="level2">
+				<li><a href="huiyuan-list.php">会员列表</a></li>
+				
+				
+			</ul>
+		</li>
 	</ul>
 </div>

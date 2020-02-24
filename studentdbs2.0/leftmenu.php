@@ -38,5 +38,12 @@
 				<li><a href="news-list.php">新闻修改</a></li>
 			</ul>
 		</li>
+		<li class="level1">
+			<a href="#none">会员管理</a>
+			<ul class="level2">
+				<li><a href="huiyuan-input.php">会员录入</a></li>
+				<li><a href="huiyuan-list.php">会员修改</a></li>
+			</ul>
+		</li>
 	</ul>
 </div>

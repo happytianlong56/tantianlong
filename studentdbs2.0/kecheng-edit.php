@@ -25,7 +25,7 @@
 		  </div>
 		  <div class="content">
 			<p class="sui-text-xxlarge my-padd">课程修改</p>
-			<form class="sui-form form-horizontal sui-validate" method="get" action="kecheng-update.php">
+			<form id="form1" class="sui-form form-horizontal sui-validate" >
 			  <div class="control-group">
 			    <label for="inputEmail" class="control-label">课程名：</label>
 			    <div class="controls">
@@ -51,3 +51,34 @@
 <?php
 include("foot.php");
 ?>
+<script type="text/javascript">
+window.onload = function(){
+	$("input[type=submit").on("click",function(event){
+		event.preventDefault();
+	$.ajax({
+		url:"api4.php?action=kch_update",
+		type:"get",
+		dataType:"json",
+		data:$("#form1").serializeArray(),
+		beforeSend:function(){
+		
+		},
+		complete:function(){
+
+		},
+		success:function(data,textStatus){
+			console.log(data);
+			if(data.code ==200){
+				alert("修改成功");
+				window.location.href = "kecheng-list.php";
+			}else{
+				alert("修改失败");
+			}
+		}
+
+
+	})
+	})
+}
+
+</script>

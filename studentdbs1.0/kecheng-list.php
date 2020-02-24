@@ -1,6 +1,9 @@
 <?php include("head.php"); 	
 	  include("conn.php");
-    header("content-type:text/html;charset=utf-8");
+	  include("func.php");
+	  $pagenum = empty($_REQUEST['pagenum'])?1:$_REQUEST['pagenum'];
+	  $pagesize = empty($_REQUEST['pagesize'])?5:$_REQUEST['pagesize'];
+
     ?>
 		<div class="sui-layout">
 		  <div class="sidebar">
@@ -22,15 +25,9 @@
 					<td><a class="sui-btn btn-small btn-warning">编辑</a>&nbsp;<a class="sui-btn btn-small btn-danger">修改</a></td>
 				</tr> -->
 <?php 
-	$sql = "select  课程编号,课程名 from 课程";
-	
-	$result = mysqli_query($conn,$sql);
-	if( mysqli_num_rows($result)>0){
-	while($a = mysqli_fetch_assoc($result)){
-	$arrClass[] = $a;
+	$pageAmount = ceil(allList("课程")/$pagesize) ;//最大页数=ceil(总页数/每页条数)
+	 $arrClass = pageList($pagenum,$pagesize,"课程");
 
-	}
-}
 // print_r($arrClass);
 	/*
 	array(
@@ -50,6 +47,18 @@
 	?>
 
 			</table>
+			<p>总计：条&nbsp;
+			 <a href="?pagenum=1">首页</a>&nbsp;
+			 <a href="?pagenum=<?php echo $pagenum-1?>">上一页</a>&nbsp;
+			 <?php
+			 	for ($i=1; $i <= $pageAmount; $i++) { 
+			 		echo "<a href='?pagenum={$i}'>{$i}</a>&nbsp";
+			 	}
+			 ?>
+			 <a href="?pagenum=<?php echo ($pagenum+1>$pageAmount)?$pageAmount:$pagenum+1?>">下一页</a> 
+			 <a href="?pagenum=<?php echo $pageAmount;?>">尾页</a>
+			</p>
+
 		  </div>
 		</div>		
 	</div>

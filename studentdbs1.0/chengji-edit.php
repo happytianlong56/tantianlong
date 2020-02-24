@@ -5,8 +5,8 @@
     	die("请选择要修改的记录");
     }else{
     	include("conn.php");
-    	$sql = "select id,学号,课程号,成绩 from 成绩 where id = '{$kid}'";
-
+    	$sql = "select id,学号,课程编号,成绩 from 成绩 where id = {$kid}";
+    	// die($sql);
     	$result = mysqli_query($conn,$sql);
     	//判断有没记录
     	if(mysqli_num_rows($result)>0){
@@ -35,13 +35,13 @@
 			  <div class="control-group">
 			    <label for="inputEmail" class="control-label">学号：</label>
 			    <div class="controls">
-			      <input type="text" name="grade_xuehao" value="<?php echo $arrClass['学号'];?>"  class="input-large input-fat" placeholder="输入课程名称" data-rules="required|minlength=0|maxlength=15" readonly="readonly">
+			      <input type="text" name="grade_xuehao" value="<?php echo $arrClass['学号'];?>"  class="input-large input-fat" placeholder="输入课程名称" data-rules="required|minlength=0|maxlength=15" >
 			    </div>
 			  </div>
 			  <div class="control-group">
 			    <label for="inputEmail" class="control-label">课程号：</label>
 			    <div class="controls">
-			      <input type="text" name="grade_kechenghao" value="<?php echo $arrClass['课程号'];?> "  class="input-large input-fat"   placeholder="输入课程编号" readonly="readonly">
+			      <input type="text" name="grade_kechenghao" value="<?php echo $arrClass['课程编号'];?> "  class="input-large input-fat"   placeholder="输入课程编号" >
 			    </div>
 			  </div>
               <div class="control-group">

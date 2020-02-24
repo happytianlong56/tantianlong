@@ -10,66 +10,93 @@
 			<p class="sui-text-xxlarge my-padd">成绩查询结果</p>
 			<table class="sui-table table-primary">
 				<tr>
+					<th>序号</th>
 					<th>学号</th>
 					<th>姓名</th>
 					<th>课程名</th>
+					<th>成绩</th>
 					<th>操作</th>
 				</tr>
-				<!-- <tr>
-					<td>1</td>
-					<td>B01</td>
-					<td>HTML+CSS基础</td>
-					<td><a class="sui-btn btn-small btn-warning">编辑</a>&nbsp;<a class="sui-btn btn-small btn-danger">修改</a></td>
-				</tr> -->
-<?php 
-  $student_name = $_POST['student_name'];
-  $student_xuehao = $_POST['student_xuehao'];
-  $kc_name = $_POST['kc_name'];
-	$sql = "select
-	`学生`.`学号`,
-	`学生`.`姓名`,
-	`课程`.`课程名`,
-	`成绩`.`成绩`
-FROM
-	`成绩`
-LEFT JOIN `学生` ON `成绩`.`学号` = `学生`.`学号`
-LEFT JOIN `课程` ON `成绩`.`课程编号` = `课程`.`课程编号`
-WHERE
-	`学生`.`姓名` = '{$student_name}'
-AND `课程`.`课程名` = '{$kc_name}' and `学生`.`学号` = '{$student_xuehao}'";
-	
-	$result = mysqli_query($conn,$sql);
-	if( mysqli_num_rows($result)>0){
-	while($a = mysqli_fetch_assoc($result)){
-	$arrClass[] = $a;
-
-	}
-}
-// print_r($arrClass);
-	/*
-	array(
-		0 = array(
-			"课程编号" => "B01",
-			"课程名" => "HTML+css基础"
-		),
-
-	)
-	 */
-	//根据结果生成表格页面
-	foreach ($arrClass as $key => $value){
-		echo "<td>{$value['学号']}</td><td>{$value['姓名']}</td>";
-		
-		echo "<td>{$value['课程名']}<td><a href='student-edit.php?kid={$value['学号']}' class='sui-btn btn-small btn-warning'>编辑</a>&nbsp;
-		<a href='student-del.php?kid={$value['学号']}' class='sui-btn btn-small btn-danger'>删除</a></td></tr>";
-	}
-
-
-	?>
-
+				<tbody id="studentlist"></tbody>
 			</table>
+			
 		  </div>
 		</div>		
 	</div>
 <?php
 include("foot.php");
 ?>
+<script>
+<?php 
+	$xuehao = $_REQUEST["student_xuehao"];
+	$name1 = $_REQUEST["student_name"];
+	$kc_name = $_REQUEST["kc_name"];
+
+?>
+
+window.onload = function(){
+	console.log($);
+	$.ajax({
+		url:"api3.php?action=chengji_search",
+		type:"get",
+		data:{
+			"xuehao":"<?php echo $xuehao?>",
+			"name1":"<?php echo $name1?>",
+			"kc_name":"<?php echo $kc_name?>"
+		},
+		dataType:"json",
+		beforeSend:function(){
+			$("#studentlist").html("<tr><td>正在查询请稍后...</td></tr>");
+		},
+	success:function(data,textStatus){
+		
+		renderData(data);
+		
+	} ,
+	error:function(XMLHttpRequest,textStatus,errorThrown){
+		$("#studentlist").html("<tr><td>网络故障，请刷新一次</td></tr>");
+	}    
+
+
+	})
+}
+
+function renderData(data){
+		console.log(data);
+	if(data.data == null){
+		//当返回数据为空时，表格内容为null
+			var str = "";
+	   str +="<tr><td>1</td>";
+	 
+	  	for (var i = 0; i < 4; i++) {
+	  		str += "<td>null</td>";	
+	  	}
+  
+	  	str+="<td><a class='sui-btn btn-samll btn-warning' >修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger'>删除</a></td>";
+	   str +="</tr>";
+	$("#studentlist").html(str);
+		}else{
+
+			var str = "";
+	   str +="<tr><td>1</td>";
+	  $.each(data.data,function(key,value){
+	  	 if(key == "id"){
+
+	  		str += "<td style='display:none;'>"+value+"</td>";
+	  	 }else{
+	  	 	
+	  		str += "<td>"+value+"</td>";
+	  	 }
+
+	  	
+
+	  
+
+	  })
+	  	str+="<td><a class='sui-btn btn-samll btn-warning' href='chengji-edit.php?kid="+data.data.id+"'>修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger' href='api5.php?action=chengji_del&kid="+data.data.id+"'>删除</a></td>";
+	  str +="</tr>";
+	$("#studentlist").html(str);
+		}
+	  
+}
+</script>

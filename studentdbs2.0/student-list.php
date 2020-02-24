@@ -50,7 +50,7 @@ include("foot.php");
 
 window.onload = function(){
 	$.ajax({
-		url:"api.php?action=xuesheng",
+		url:"api3.php?action=xuesheng",
 		type:"get",
 		data:{
 			pagenum:1,
@@ -72,7 +72,7 @@ window.onload = function(){
 			onSelect: function(num){
 				console.log("我是"+ num ); //打开控制台观察
 				$.ajax({
-					url:"api.php?action=xuesheng",
+					url:"api3.php?action=xuesheng",
 					type:"get",
 					beforeSend:function(){
 						$("#xueshenglist").html("<tr><td>正在查询请稍后...</td></tr>");
@@ -118,7 +118,7 @@ function renderData(data){
 	  		str += "<td>"+item+"</td>";
 	  		}
 	  	})
-	  	str+="<td><a class='sui-btn btn-samll btn-warning' href='student-edit.php?kid="+value.学号+"'>修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger' href='student-del.php?kid="+value.学号+"'>删除</a></td>";
+	  	str+="<td><a class='sui-btn btn-samll btn-warning' href='student-edit.php?kid="+value.学号+"'>修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger' href='api5.php?action=student_del&kid="+value.学号+"'>删除</a></td>";
 	  	str += "</tr>";
    
 

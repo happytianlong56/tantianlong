@@ -55,11 +55,12 @@
 			<div class="form-group">
 				<label for="email" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
 				<input type="text" name="email" id="email" class="form-control" style="display: inline-block ;width:200px" >
+				<span></span>
 			</div>
 			<div class="form-group">
 				<label for="password" style="display: inline-block;width:150px;text-align: right; ">密码：</label>
 				<input type="text" name="password" id="password" class="form-control" style="display: inline-block ;width:200px" >
-				
+				<span></span>
 			</div>
 			<div class="form-group">
 				<label for="verify" style="display: inline-block;width:150px;text-align: right; ">验证码：</label>
@@ -83,7 +84,7 @@
 	//随机生成验证码
 	 var arr = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u",
 	  "v","w","x","y","z"];
-	 var arr1 = [];
+	
 	 var str = "";
 	 play();
 	 function play(){
@@ -98,21 +99,31 @@
 		 str="";
 		play();
 	} 
+	//邮箱输入框获取焦点后，报错显示框为空
+	$("#email").on("focus",function(){
+         $(this).next().html("").hide();
+          	})
+	//密码框获得焦点后，报错显示框为空
+	$("#password").on("focus",function(){
+          
+        $(this).next().html("").hide();  				
+          	})
+
 	$("#verify").on("focus",function(){
-		$(this).next().next().html(" ");
+		$(this).next().next().html(" ").hide();
 	})
 	//验证码验证
 	$("#verify").on("blur",function(){
 		var verify_code = $("#verify_code").text();
 		var verify = $(this).val();
 		if(verify_code==verify){
-			$(this).next().next().html(" ");
+			$(this).next().next().html(" ").hide();
 		}else if(verify.length == 0){
-			$(this).next().next().html("请输入验证码 ").css("color","red");
+			$(this).next().next().show().html("请输入验证码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 			
 			
 		}else{
-			$(this).next().next().html("验证码不一致").css("color","red");
+			$(this).next().next().show().html("验证码不一致").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		
 			
 
@@ -133,21 +144,18 @@ $("button[type=submit]").on("click",function(event){
         var password = $("#password").val();
 		var verify = $("#verify").val();
 		var verify_code = $("#verify_code").text();	
-		console.log(email);
-		console.log(password);
-		console.log(verify);
-		console.log(verify_code);
+		
 		
 		if(email.length>0 && password.length >0 && verify.length >0 && verify==verify_code ){
 			return true;
-		}else if(email.length == 0){
-			alert("用户名不能为空");
+		}else if(verify.length ==0 ){
+			$("#verify").next().next().show().html("请输入验证码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 			return false;
-		}else if(password.length == 0){
-			alert("请输入密码");
+		}else if(password.length ==0 ){
+			$("#password").next().show().html("请输入密码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 			return false;
-		}else if(verify.length ==0){
-			alert("请输入验证码");
+		}else if(email.length ==0 ){
+			$("#email").next().show().html("请输入用户名").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 			return false;
 		}
         },
@@ -163,7 +171,13 @@ $("button[type=submit]").on("click",function(event){
 				document.cookie = "name="+data.data.email+";expires="+tt.toGMTString();
 				document.cookie = "nickname="+data.data.nickname+";expires="+tt.toGMTString();
         		//window.location.href = "index.php";
-        }
+          }else if(data.code == 20001){
+          	$("#password").next().show().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+
+          }else if(data.code == 20004){
+          	$("#email").next().show().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+          	
+          } 
     }
     });
 })

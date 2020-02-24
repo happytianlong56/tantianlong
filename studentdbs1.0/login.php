@@ -1,18 +1,3 @@
-<?php
-    session_start();
-    include('conn.php');
-    if( !empty($_REQUEST['uname']) ){
-        $uname = $_REQUEST['uname'];
-        $password = $_REQUEST['password'];
-        $sql = "select * from admin where uname='{$uname}' and password='{$password}'";
-        // die("$sql");
-        $result = mysqli_query($conn,$sql);
-        if(mysqli_num_rows($result) > 0){
-            $_SESSION['uname'] = $uname;
-		    header("Refresh:0;url=index.php");            
-        }
-    }
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,14 +34,49 @@
 </style>
 </head>
 <body>
-    <form action="?" method="post">
-        <label for="">账号：</label><input type="text" name="uname" class="form-control" style="display: inline-block; width:200px" autocomplete=""/>
+    <form id="form1" method="post">
+        <label for="">账号：</label><input type="text" id="uname" name="uname" class="form-control" style="display: inline-block; width:200px;text" ><span>  </span>
         <br>
         <br>
-        <label for="">密码：</label><input type="text" name="password" class="form-control" style="display: inline-block; width:200px" autocomplete=""/>
+        <label for="">密码：</label><input type="text" id="password" name="password" class="form-control" style="display: inline-block; width:200px" ><span> </span>
         <br>
         <br>
-        <input type="submit" name="submit" value="登录" class="form-control submit_login" style="display: inline-block; width:200px" autocomplete=""/>
+        <input type="submit" name="submit" value="登录" class="form-control submit_login" style="display: inline-block; width:200px" >
     </form>
 </body>
 </html>
+<script>
+   
+    $("#uname").on("focus",function(){
+        $(this).next().html("").hide();
+    })
+    $("#password").on("focus",function(){
+        $(this).next().html("").hide();
+    })
+    $("input[type=submit]").on("click",function(event){
+        console.log("ok")
+            event.preventDefault();
+        $.ajax({
+            url:"api.php?action=test_admin",
+            type:"get",
+            dataType:"json",
+            data:$("#form1").serializeArray(),
+            success:function(data,textStatus){
+                if(data.code == 200){
+                console.log(data);
+                window.location.href = "index.php";
+                var  tt = new Date();
+                tt.setTime(tt.getTime()+30*60*1000);//tt为30天后的未来时间
+                document.cookie = "uname="+data.data.uname+";expires="+tt.toGMTString();
+                document.cookie = "upassword="+data.data.password+";expires="+tt.toGMTString();
+                
+                }
+                if(data.code == 20004){
+                    $("#uname").next().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"100px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+                }if(data.code == 20001){
+                    $("#password").next().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"100px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+                }
+            }
+        })
+    })
+</script>

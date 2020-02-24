@@ -25,7 +25,7 @@
 		  </div>
 		  <div class="content">
 			<p class="sui-text-xxlarge my-padd">学生修改</p>
-			<form id="student_update" class="sui-form form-horizontal sui-validate" enctype="multipart/form-data"  >
+			<form id="form1" action="student-update.php" class="sui-form form-horizontal sui-validate" enctype="multipart/form-data" method="post" >
 			  <div class="control-group">
 			    <label for="" class="control-label">学号：</label>
 			    <div class="controls">
@@ -46,7 +46,7 @@
                 </select>
 			  </div>
               <div class="control-group">
-			    <label for="banzhuren" class="control-label">出生日期</label>
+			    <label for="banzhuren" class="control-label">出生日期:</label>
 			    <div class="controls">
 			      <input type="text" value="<?php echo $arrClass['出生日期'];?>" name="st_birthday" class="input-large input-fat"  placeholder="输入出生日期" data-rules="required" data-toggle="datepicker">
 			    </div>
@@ -58,12 +58,12 @@
 			    </div>
 			  </div>
 			  <div class="control-group">
-			    <label for="inputEmail" class="control-label">照片</label>
-				<img src="<?php echo $arrClass['照片']?>" alt="" width="100">
+			    <label for="inputEmail" class="control-label">照片:</label>
 			    <div class="controls">
-			      <input type="file" name="st_file" value=""  class="input-large input-fat"   placeholder="输入课程编号">
-				  <input type="hidden" value="<?php echo $arrClass["照片"]?>" name="oldphoto">
+			      <input type="file" name="file1" value=""  class="input-large input-fat"  >
+				  <input type="hidden"  value="<?php echo $arrClass["照片"]?>" name="oldphoto">
 			    </div>
+				<img src="<?php echo $arrClass['照片']?>" alt="" style = "display: inline-block; width:100px;height:80px">
 			  </div>
               <div class="control-group">
 			    <label for="inputEmail" class="control-label">姓名：</label>
@@ -84,23 +84,27 @@
 <?php
 include("foot.php");
 ?>
-<script>
+<!-- <script type="text/javascript">
 window.onload = function(){
 		$("input[type=submit]").on("click",function(){
 		event.preventDefault();
 		$.ajax({
-			url:"api.php?action=student_update",
+			url:"api4.php?action=student_update",
 			type:"post",
 			enctype:"multipart",
-			dataType:"jsonp",
-			data:$("#student_update").serializeArray(),
+			dataType:"json",
+			data:$("#form1").serializeArray(),
 			beforeSend:function(){
 
 			},
 			success:function(data,textStatus){
 				console.log(data);
 				if(data.code==200){
-					console.log("学生修改成功！");
+					alert("学生信息修改成功！");
+					
+					window.location.href = "student-list.php";
+				}else{
+					alert("学生信息修改失败!");
 				}
 			}
 			
@@ -108,4 +112,4 @@ window.onload = function(){
 
 	})
 }
-</script>
+</script> -->

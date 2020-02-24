@@ -23,38 +23,7 @@
 	<div class="pinglun">
 		<p class="new">最新评论</p>
 		<ul class="ul1" id="ul1">
-			<!-- <li class="li1">
-				<img src="image/touxiang01.jpeg">
-				<div class="right_ctt" id="div1">
-				<p class="llbb">零零888</p>
-				<p class="xzx">习主席带领我们前进</p>
-				<p class="bott"><span class="gg">刚刚</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">0</span></p>
-				</div>
-			</li>
-			<li class="li1">
-				<img src="image/touxiang02.jpeg">
-				<div class="right_ctt">
-				<p class="llbb">可乐爷爷6207856</p>
-				<p class="xzx">习书记说的千真万确</p>
-				<p class="bott"><span class="gg">55分钟前</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">0</span></p>
-				</div>
-			</li>
-			<li class="li1">
-				<img src="image/touxiang03.jpeg">
-				<div class="right_ctt">
-				<p class="llbb">狐狐网友</p>
-				<p class="xzx">总书记的思想带动全世界人名走向幸福</p>
-				<p class="bott"><span class="gg">58分钟前</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">0</span></p>
-				</div>
-			</li>
-			<li class="li1">
-				<img src="image/touxaing04.jpeg">
-				<div class="right_ctt">
-				<p class="llbb">小狐狸5579097</p>
-				<p class="xzx">习主席讲话真深刻！非常有意义</p>
-				<p class="bott"><span class="gg">2月19日 15:46</span><span class="delete">删除</span><span class="zan"><img src="image/zan.png">2</span></p>
-				</div>
-			</li> -->
+			
 		</ul>
 		<div class="more" style="width:100%;height:50px;font:24px/50px '微软雅黑'; text-align: center;cursor:pointer">加载更多...</div>
 	</div>
@@ -65,6 +34,8 @@
     <a href="javascript:void(0)" data-role="login-close" class="close-pop" data-spm-data="1">
         <i class="icon-close"></i>
     </a>
+
+
     <div class="title">
         <ul>
             <li data-role="userlogin-bar" class="cur" data-spm-acode="8081" data-spm-data="2">账号密码登录</li>
@@ -119,6 +90,8 @@
 </body>
 </html>
 <script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery.min.js"></script>
+<script type="text/javascript" src="ajax.js"></script>
+<script src="http://cdn.staticfile.org/artTemplate.js/3.0.1/template.js"></script>
 <script>
  
 var btt=document.getElementById('btt');
@@ -127,6 +100,8 @@ var ul1=document.getElementById('ul1');
 var div1=document.getElementById('div1');
 var num=document.getElementById('num');
 var timer=null;
+
+
 var cc=document.getElementById('cc');
 btt.onclick=function(){
 	//获取用户的留言内容
@@ -135,52 +110,52 @@ btt.onclick=function(){
 		$("div[data-role='body-shade']").show();
 		$("div[data-role='login-pop']").show();
 	}else{	
-		var txt1=document.createTextNode(liuyanTxt);
-		var txt2=document.createTextNode("零零888");
-		var txt4=document.createTextNode("刚刚");
-		var txt5=document.createTextNode("删除");
-		var li1=document.createElement("li");
-		li1.setAttribute("class","li1");
-		var div1=document.createElement("div");
-		div1.setAttribute("class","right_ctt");
-		//头像
-		var img1=document.createElement("img");
-		img1.setAttribute("src","image/touxiang01.jpeg")		
-		//p1用户昵称
-		var p2=document.createElement("p");
-		p2.appendChild(txt2);
-		p2.setAttribute("class","llbb");
-		//p2用户留言
-		var p1=document.createElement("p");
-		p1.appendChild(txt1);
-		p1.setAttribute("class","xzx");		
-		//删除点赞
-		var p3=document.createElement("p");
-		p3.setAttribute("class","bott");
-		var span1=document.createElement("span");
-		span1.appendChild(txt4);
-		span1.setAttribute("class","gg");
-		var span2=document.createElement("span");
-		span2.appendChild(txt5);
-		span2.setAttribute("class","delete");
-		span2.setAttribute("onclick","del(this)");
-		//span2.onclick="del(this)";
-		//span3 点赞
-		var span3=document.createElement("span");
-		span3.setAttribute("class","zan");
-		var img2=document.createElement("img");
-		img2.setAttribute("src","image/zan.png");
-		span3.appendChild(img2);
-		p3.appendChild(span1);
-		p3.appendChild(span2);
-		p3.appendChild(span3);
-		li1.appendChild(img1);
+		// var txt1=document.createTextNode(liuyanTxt);
+		// var txt2=document.createTextNode("零零888");
+		// var txt4=document.createTextNode("刚刚");
+		// var txt5=document.createTextNode("删除");
+		// var li1=document.createElement("li");
+		// li1.setAttribute("class","li1");
+		// var div1=document.createElement("div");
+		// div1.setAttribute("class","right_ctt");
+		// //头像
+		// var img1=document.createElement("img");
+		// img1.setAttribute("src","image/touxiang01.jpeg")		
+		// //p1用户昵称
+		// var p2=document.createElement("p");
+		// p2.appendChild(txt2);
+		// p2.setAttribute("class","llbb");
+		// //p2用户留言
+		// var p1=document.createElement("p");
+		// p1.appendChild(txt1);
+		// p1.setAttribute("class","xzx");		
+		// //删除点赞
+		// var p3=document.createElement("p");
+		// p3.setAttribute("class","bott");
+		// var span1=document.createElement("span");
+		// span1.appendChild(txt4);
+		// span1.setAttribute("class","gg");
+		// var span2=document.createElement("span");
+		// span2.appendChild(txt5);
+		// span2.setAttribute("class","delete");
+		// span2.setAttribute("onclick","del(this)");
+		// //span2.onclick="del(this)";
+		// //span3 点赞
+		// var span3=document.createElement("span");
+		// span3.setAttribute("class","zan");
+		// var img2=document.createElement("img");
+		// img2.setAttribute("src","image/zan.png");
+		// span3.appendChild(img2);
+		// p3.appendChild(span1);
+		// p3.appendChild(span2);
+		// p3.appendChild(span3);
+		// li1.appendChild(img1);
 		
-		div1.appendChild(p2);
-		div1.appendChild(p1);
-		div1.appendChild(p3);
-		li1.appendChild(div1);
-		ul1.insertBefore(li1,ul1.firstElementChild)
+		// div1.appendChild(p2);
+		// div1.appendChild(p1);
+		// div1.appendChild(p3);
+		// li1.appendChild(div1);
+		// ul1.insertBefore(li1,ul1.firstElementChild)
 	}
 
 }
@@ -211,102 +186,18 @@ function del(that){
 
 
 function cleartxt(that){
-	if(that.placeholder=='来说两句吧...'){
-		that.placeholder='';
+	if(that.placeholder==''){
+		that.placeholder='来说两句吧...';
 	}
 }
   // 点击关闭按钮清除弹框
   $(".icon-close").on("click",function(){
   	$(".pop-layer,.body-shade").css("display","none");
   })
- //请求数据库中的留言内容
- $.ajax({
- 	url:"api.php?action=comment",
- 	type:"post",
- 	dataType:"json",
- 	beforeSend:function(){
 
- 	},
- 	success:function(data){
- 	//渲染留言
- 	console.log(data);
- 	var str = "";
- 	$.each(data.data,function(i,k){
-
- 	str += " <li class='li1'><img src='image/touxiang03.jpeg'><div class='right_ctt'><p class='llbb'>"+k.nickname+"</p><p class='xzx'>"+k.content+"</p><p class='bott'><span class='gg'>58分钟前</span><span class='delete'>删除</span><span class='zan'><img src='image/zan.png'>0</span></p></div></li>"
-
- 	})
- 	$("#ul1").html(str);
- 	var num = 2;
- 	$("#ul1").children("li:gt("+num+")").hide();
-
- 	
- 	$(".more").on("click",function(){
- 		 console.log(num);
- 		 num ++ ;
- 		$("#ul1").children("li:lt("+num+")").show().children("li:gt("+num+")").hide();
- 	})
- 	}
- });
     
 
 
- 	//登录验证,判断是否存在该用户
- 	$(".login-bn").on("click",function(event){
-    event.preventDefault();
-    $.ajax({
-        url:"api.php?action=login",
-        type:"post",
-        dataType:"json",
-        // data:"email="+$(".user-input").val()+"&password="+$(".user-password").val(),
-        data:"email="+$(".user-input").val()+"&password="+$(".user-password").val(),
-        beforeSend:function(){
-        },
-        success:function(data){
-        	console.log(data);
-        	if(data.code == 200){
-        		//如果跳转html,就把data中的email和nickname生成cookie
-				var  tt = new Date();
-				tt.setTime(tt.getTime()+3*30*24*60*60*1000);//tt为30天后的未来时间
-				document.cookie = "id="+data.data.id+"expires="+tt.toGMTString();
-				document.cookie = "name="+data.data.email+";expires="+tt.toGMTString();
-				document.cookie = "nickname="+data.data.nickname+";expires="+tt.toGMTString();
-			//登录成功后，登录框消失
-			//$(".pop-layer,.login-pop").animate({"display":"none"},200);	
-			$(".pop-layer,.login-pop,.body-shade").css("display","none");
-			//再次发送ajax请求
-			$("#btt").on("click",function(){
-				event.preventDefault();
-				$.ajax({
-					url:"api.php?action=publish",
-					type:"post",
-					dataType:"json",
-					data:"content="+$("#text").val()+"&user_id="+data.data.user_id,
-					beforeSend:function(){
-
-					},
-					success:function(data){
-						
-					}
-				});
-			})	
-
-         }
-        else if(data.code == 20004){
-        		$(".user-input").on("blur",function(){
-        			$(".user-input").parent().next().html("");
-        		})
-        		$(".user-input").parent().next().html(data.msg).css("color","red");
-
-        }else if(data.code==20001){
-        		$(".password-input").on("blur",function(){
-        			$(".password-input").parent().next().html("");
-        		})
-        	    $(".password-input").parent().next().html(data.msg).css("color","red");
-        }
-    }
-    });
-})
 
 
 

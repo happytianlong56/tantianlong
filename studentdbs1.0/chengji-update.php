@@ -1,7 +1,7 @@
 <?php
 include("conn.php");
 
-$sql = "update 成绩 set 学号='".$_GET['grade_xuehao']."',课程号='".$_GET['grade_kechenghao']."',成绩='".$_GET['grade_num']."' where id = '".$_GET['grade_id']."'";
+$sql = "update 成绩 set 学号='".$_GET['grade_xuehao']."',课程编号='".$_GET['grade_kechenghao']."',成绩='".$_GET['grade_num']."' where id = '".$_GET['grade_id']."'";
 
 $result = mysqli_query($conn,$sql);
 

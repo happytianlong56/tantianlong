@@ -1,13 +1,16 @@
 <?php include("head.php"); 	
 	  include("conn.php");
-    header("content-type:text/html;charset=utf-8");
+	  include("func.php");
+	  $pagenum = empty($_REQUEST['pagenum'])?1:$_REQUEST['pagenum'];
+	  $pagesize = empty($_REQUEST['pagesize'])?5:$_REQUEST['pagesize'];
+
     ?>
 		<div class="sui-layout">
 		  <div class="sidebar">
 <?php  include("leftmenu.php");?>	  	
 		  </div>
 		  <div class="content">
-			<p class="sui-text-xxlarge my-padd">课程列表</p>
+			<p class="sui-text-xxlarge my-padd">成绩列表</p>
 			<table class="sui-table table-primary">
 				<tr>
 					<th>序号</th>
@@ -23,32 +26,27 @@
 					<td><a class="sui-btn btn-small btn-warning">编辑</a>&nbsp;<a class="sui-btn btn-small btn-danger">修改</a></td>
 				</tr> -->
 <?php 
-	$sql = "select * from 成绩";
-	
-	$result = mysqli_query($conn,$sql);
-	if( mysqli_num_rows($result)>0){
-	while($a = mysqli_fetch_assoc($result)){
-		$sql2 = "select 课程编号 from 课程 where 课程编号=".$a["课程号"];
-		$result2 = mysqli_query($conn,$sql2);
-		$c = mysqli_fetch_assoc($result2);
-		// echo $c;
-		// echo $c['班主任姓名'];
-		
-		//$b数组中临时添加一个键“班主任姓名”，赋值为上一部查询得到的姓名
-		// $a['课程号'] = $c['课程名'];
-		$arrClass[] = $a;
-		// print_r($arrClass);
-	}
-}
+ 	$pageAmount = ceil(allList("成绩")/$pagesize) ;//最大页数=ceil(总页数/每页条数)
+	 $arrClass = pageList($pagenum,$pagesize,"成绩");
+
 	//根据结果生成表格页面
 	foreach ($arrClass as $key => $value){
-		echo "<tr><td>".($value['id'])."</td><td>{$value['学号']}</td><td>{$value['课程号']}</td><td>{$value['成绩']}</td><td><a href='chengji-edit.php?kid={$value['id']}' class='sui-btn btn-small btn-warning'>编辑</a>&nbsp;<a href='chengji-del.php?kid={$value['id']}' class='sui-btn btn-small btn-danger'>删除</a></td></tr>";
+		echo "<tr><td>".($value['id'])."</td><td>{$value['学号']}</td><td>{$value['课程编号']}</td><td>{$value['成绩']}</td><td><a href='chengji-edit.php?kid={$value['id']}' class='sui-btn btn-small btn-warning'>编辑</a>&nbsp;<a href='chengji-del.php?kid={$value['id']}' class='sui-btn btn-small btn-danger'>删除</a></td></tr>";
 	}
-
-
 	?>
 
 			</table>
+			<p>总计：条&nbsp;
+			 <a href="?pagenum=1">首页</a>&nbsp;
+			 <a href="?pagenum=<?php echo $pagenum-1?>">上一页</a>&nbsp;
+			 <?php
+			 	for ($i=1; $i <= $pageAmount; $i++) { 
+			 		echo "<a href='?pagenum={$i}'>{$i}</a>&nbsp";
+			 	}
+			 ?>
+			 <a href="?pagenum=<?php echo ($pagenum+1>$pageAmount)?$pageAmount:$pagenum+1?>">下一页</a> 
+			 <a href="?pagenum=<?php echo $pageAmount;?>">尾页</a>
+			</p>
 		  </div>
 		</div>		
 	</div>

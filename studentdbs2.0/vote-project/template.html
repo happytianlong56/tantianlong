@@ -1,7 +1,7 @@
 
 {{each data as item key}}
   {{if item.status == "0"}}
-<li class="citem js-vote-item" id="6" style="display: none;">
+<li class="citem js-vote-item" id="{{item.id}}" style="display: none;">
     <div class="item-poster js-intro-item">
         <img class="lazy" src="{{item.pic}}">
         <div class="caption">
@@ -9,13 +9,13 @@
              <p class="txt-position">{{item.position}}</p>
         </div>
     </div>  
-    <div class="vote js-vote-btn" data-id="6" data-switch="off">
+    <div class="vote js-vote-btn" data-id="{{item.id}}" data-switch="off">
          <span class="icon-zan">X</span>
          <span class="num">{{item.votenum}}</span>
     </div>
 </li>
 {{else}}  
-<li class="citem js-vote-item" id="6">
+<li class="citem js-vote-item" id="{{item.id}}">
     <div class="item-poster js-intro-item">
         <img class="lazy" src="{{item.pic}}">
         <div class="caption">
@@ -23,7 +23,7 @@
              <p class="txt-position">{{item.position}}</p>
         </div>
     </div>  
-    <div class="vote js-vote-btn" data-id="6" data-switch="off">
+    <div class="vote js-vote-btn" data-id="{{item.id}}" data-switch="off">
          <span class="icon-zan">X</span>
          <span class="num">{{item.votenum}}</span>
     </div>

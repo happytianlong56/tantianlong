@@ -20,67 +20,84 @@
 					<th>姓名</th>
 					<th>操作</th>
 				</tr>
-				<!-- <tr>
-					<td>1</td>
-					<td>B01</td>
-					<td>HTML+CSS基础</td>
-					<td><a class="sui-btn btn-small btn-warning">编辑</a>&nbsp;<a class="sui-btn btn-small btn-danger">修改</a></td>
-				</tr> -->
-<?php 
-	$student_name = $_GET['student_name'];
-	$student_xuehao = $_GET['student_xuehao'];
-	$sql = "select
-			学号,
-			班号,
-			性别,
-			出生日期,
-			手机号,
-			姓名,
-			照片
-		FROM
-			学生
-		WHERE
-			`姓名` = '{$student_name}'
-		OR `学号` = '{$student_xuehao}'";
-	
-	$result = mysqli_query($conn,$sql);
-	if( mysqli_num_rows($result)>0){
-	while($a = mysqli_fetch_assoc($result)){
-	$arrClass[] = $a;
-
-	}
-}
-// print_r($arrClass);
-	/*
-	array(
-		0 = array(
-			"课程编号" => "B01",
-			"课程名" => "HTML+css基础"
-		),
-
-	)
-	 */
-	//根据结果生成表格页面
-	foreach ($arrClass as $key => $value){
-		echo "<tr><td>".($key+1)."</td><td>{$value['学号']}</td><td>{$value['班号']}</td>";
-		// <td>{$value['性别']}</td>
-		if( $value['性别'] == 0 ){
-			echo "<td>女</td>";
-		}else{
-			echo "<td>男</td>";
-		}
-		echo "<td>{$value['出生日期']}</td><td>{$value['手机号']}</td><td>{$value['照片']}</td><td>
-		{$value['姓名']}</td><td><a href='student-edit.php?kid={$value['学号']}' class='sui-btn btn-small btn-warning'>编辑</a>&nbsp;
-		<a href='student-del.php?kid={$value['学号']}' class='sui-btn btn-small btn-danger'>删除</a></td></tr>";
-	}
-
-
-	?>
-
+				<tbody id="studentlist"></tbody>
 			</table>
+			
 		  </div>
 		</div>		
 	</div>
 <?php
 include("foot.php");
 ?>
+<script>
+<?php 
+	$xuehao = $_REQUEST["student_xuehao"];
+	$name = $_REQUEST["student_name"];
+
+?>
+
+window.onload = function(){
+	console.log($);
+	$.ajax({
+		url:"api3.php?action=student_search",
+		type:"get",
+		data:{
+			"xuehao":"<?php echo $xuehao?>",
+			"name":"<?php echo $name?>"
+		},
+		dataType:"json",
+		beforeSend:function(){
+			$("#studentlist").html("<tr><td>正在查询请稍后...</td></tr>");
+		},
+	success:function(data,textStatus){
+		
+		renderData(data);
+		
+	} ,
+	error:function(XMLHttpRequest,textStatus,errorThrown){
+		$("#studentlist").html("<tr><td>网络故障，请刷新一次</td></tr>");
+	}    
+
+
+	})
+}
+
+function renderData(data){
+		console.log(data);
+		if(data.data == null){
+
+			var str = "";
+	   str +="<tr><td>1</td>";
+	 
+	  	for (var i = 0; i < 7; i++) {
+	  		str += "<td>null</td>";	
+	  	}
+  
+	  	str+="<td><a class='sui-btn btn-samll btn-warning' >修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger'>删除</a></td>";
+	  str +="</tr>";
+	$("#studentlist").html(str);
+		}else{
+
+			var str = "";
+	   str +="<tr><td>1</td>";
+	  $.each(data.data,function(key,value){
+	  	
+   			if(value == 0){
+	  			str+="<td>女</td>";
+	  		}else if(value == 1){
+	  			str+="<td>男</td>";
+	  		}else{
+
+	  		str += "<td>"+value+"</td>";
+	  		}
+
+	  
+
+	  })
+	  	str+="<td><a class='sui-btn btn-samll btn-warning' href='student-edit.php?kid="+data.data.学号+"'>修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger' href='api5.php?action=student_del&kid="+data.data.学号+"'>删除</a></td>";
+	  str +="</tr>";
+	$("#studentlist").html(str);
+		}
+	  
+}
+</script>

@@ -7,7 +7,7 @@
 		  </div>
 		  <div class="content">
 			<p class="sui-text-xxlarge my-padd">学生信息录入</p>
-			<form id="form_studentinput" class="sui-form form-horizontal sui-validate" method="post" enctype="multipart/form-data" >
+			<form id="form_studentinput" action="student-save.php" class="sui-form form-horizontal sui-validate" method="post" enctype="multipart/form-data" >
 			  <div class="control-group">
 			    <label for="kcName" class="control-label">学号：</label>
 			    <div class="controls">
@@ -28,7 +28,7 @@
 			  </div>
 			  <div class="control-group">
 			    <label for="jiaoshi" class="control-label">性别：</label>
-			    	<select name="sex">
+			    	<select name="sex" id="sex">
 			    		<option value="1">男</option>
 			    		<option value="0">女</option>
 			    	</select>
@@ -64,22 +64,28 @@
 <?php
 	include("foot.php");
 ?>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
+	console.log("ok");
+	xuehao.onblur = function(){
+	console.log($("#xuehao").val());
+		
+	}
 window.onload = function(){
 	$("input[type=submit]").on("click",function(){
 		event.preventDefault();
 		$.ajax({
-			url:"api.php?action=student_input",
+			url:"api2.php?action=student_input",
 			type:"post",
 			dataType:"json",
-			enctype:"multipart/form-data",
-			data:{xuehao:$("#xuehao").val,
-				banhao:$("#banhao").val,
-				sex:$("#sex").val,
-				birthday:$("#birthday").val,
-				phone:$("#phone").val,
-				
-				sname:$("#sname").val
+			// contentType:"multipart/form-data",
+			data:{
+				'xuehao':$("#xuehao").val(),
+				'banhao':$("#banhao").val(),
+				'sex':$("#sex").val(),
+				'birthday':$("#birthday").val(),
+				'phone':$("#phone").val(),
+				'pic':$("#file1").val(),
+				'sname':$("#sname").val()
 
 			},
 			beforeSend:function(){
@@ -95,7 +101,31 @@ window.onload = function(){
 		})
 
 	})
+
+	 //ajax，发送照片
+	 $("#submit").click(function(){
+	$.ajax({
+		url:"api2.php?action=student_input",
+		method:"post",
+		cache: false,
+		data:new FormData($('#form1')[0]),
+		contentType: false,
+		processData: false,
+		dataType:"json",
+		success:function(data){
+			
+			console.log(data);
+		},
+		error:function(data){
+			alert(data,'error');
+		}
+	})
+})
+
+
+
+
 }
 
 
-</script>
+</script> -->

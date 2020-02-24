@@ -5,7 +5,7 @@
     	die("请选择要修改的记录");
     }else{
     	include("conn.php");
-    	$sql = "select id,学号,课程号,成绩 from 成绩 where id = '{$kid}'";
+    	$sql = "select * from 成绩 where id = '{$kid}'";
 
     	$result = mysqli_query($conn,$sql);
     	//判断有没记录
@@ -25,7 +25,7 @@
 		  </div>
 		  <div class="content">
 			<p class="sui-text-xxlarge my-padd">成绩修改</p>
-			<form class="sui-form form-horizontal sui-validate" method="get" action="chengji-update.php">
+			<form id="form1" class="sui-form form-horizontal sui-validate">
             <div class="control-group">
 			    <label for="inputEmail" class="control-label">id：</label>
 			    <div class="controls">
@@ -41,7 +41,7 @@
 			  <div class="control-group">
 			    <label for="inputEmail" class="control-label">课程号：</label>
 			    <div class="controls">
-			      <input type="text" name="grade_kechenghao" value="<?php echo $arrClass['课程号'];?> "  class="input-large input-fat"   placeholder="输入课程编号" readonly="readonly">
+			      <input type="text" name="grade_kechenghao" value="<?php echo $arrClass['课程编号'];?> "  class="input-large input-fat"   placeholder="输入课程编号" readonly="readonly">
 			    </div>
 			  </div>
               <div class="control-group">
@@ -63,3 +63,34 @@
 <?php
 include("foot.php");
 ?>
+<script type="text/javascript">
+window.onload = function(){
+	$("input[type=submit").on("click",function(event){
+		event.preventDefault();
+	$.ajax({
+		url:"api4.php?action=result_update",
+		type:"get",
+		dataType:"json",
+		data:$("#form1").serializeArray(),
+		beforeSend:function(){
+		
+		},
+		complete:function(){
+
+		},
+		success:function(data,textStatus){
+			console.log(data);
+			if(data.code ==200){
+				alert("修改成功");
+				window.location.href = "banzhuren-list.php";
+			}else{
+				alert("修改失败");
+			}
+		}
+
+
+	})
+	})
+}
+
+</script>

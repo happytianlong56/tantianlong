@@ -7,7 +7,7 @@
 <?php  include("leftmenu.php");?>	  	
 		  </div>
 		  <div class="content">
-			<p class="sui-text-xxlarge my-padd">课程列表</p>
+			<p class="sui-text-xxlarge my-padd">成绩列表</p>
 			<table class="sui-table table-primary">
 				<tr>
 					<th>序号</th>
@@ -16,42 +16,113 @@
 					<th>成绩</th>
 					<th>操作</th>
 				</tr>
-				<!-- <tr>
-					<td>1</td>
-					<td>B01</td>
-					<td>HTML+CSS基础</td>
-					<td><a class="sui-btn btn-small btn-warning">编辑</a>&nbsp;<a class="sui-btn btn-small btn-danger">修改</a></td>
-				</tr> -->
-<?php 
-	$sql = "select * from 成绩";
-	
-	$result = mysqli_query($conn,$sql);
-	if( mysqli_num_rows($result)>0){
-	while($a = mysqli_fetch_assoc($result)){
-		$sql2 = "select 课程编号 from 课程 where 课程编号=".$a["课程号"];
-		$result2 = mysqli_query($conn,$sql2);
-		$c = mysqli_fetch_assoc($result2);
-		// echo $c;
-		// echo $c['班主任姓名'];
-		
-		//$b数组中临时添加一个键“班主任姓名”，赋值为上一部查询得到的姓名
-		// $a['课程号'] = $c['课程名'];
-		$arrClass[] = $a;
-		// print_r($arrClass);
-	}
-}
-	//根据结果生成表格页面
-	foreach ($arrClass as $key => $value){
-		echo "<tr><td>".($value['id'])."</td><td>{$value['学号']}</td><td>{$value['课程号']}</td><td>{$value['成绩']}</td><td><a href='chengji-edit.php?kid={$value['id']}' class='sui-btn btn-small btn-warning'>编辑</a>&nbsp;<a href='chengji-del.php?kid={$value['id']}' class='sui-btn btn-small btn-danger'>删除</a></td></tr>";
-	}
-
-
-	?>
-
+				<tbody id="chengjilist"></tbody>
 			</table>
+			<!-- 分页 -->
+			<div id="test" class="sui-pagination pagination-small">
+				<ul>
+				<li class="prev disabled"><a href=" ">«上一页</a></li>
+				<li class="active"><a href="#">1</a></li>
+				<li><a href="#">2</a></li>
+				<li><a href="#">3</a></li>
+				<li><a href="#">4</a></li>
+				<li><a href="#">5</a></li>
+				<li class="dotted"><span>...</span></li>
+				<li class="next"><a href="#">下一页»</a></li>
+				</ul>
+				<div><span>共10页&nbsp;</span><span>
+				到
+				<input type="text" class="page-num"><button class="page-confirm" onclick="alert(1)">确定</button>
+				页</span></div>
+			</div>
 		  </div>
 		</div>		
 	</div>
 <?php
 include("foot.php");
 ?>
+<script>
+
+
+window.onload = function(){
+	$.ajax({
+		url:"api3.php?action=chengji",
+		type:"get",
+		data:{
+			pagenum:1,
+			pagesize:5
+		},
+		dataType:"json",
+		beforeSend:function(){
+			$("#chengjilist").html("<tr><td>正在查询请稍后...</td></tr>");
+		},
+	success:function(data,textStatus){
+		
+		renderData(data);
+		//渲染分页条
+		$('#test').pagination({
+			pageSize:5,//每页显示条数
+			itemsCount:data.allnum,//获取记录总条数
+			styleClass: ['pagination-large'],  //默认的css样式
+			showCtrl: true,	//是否展示总页数和跳转控制器，默认为false
+			onSelect: function(num){
+				console.log("我是"+ num ); //打开控制台观察
+				$.ajax({
+					url:"api3.php?action=chengji",
+					type:"get",
+					beforeSend:function(){
+						$("#chengjilist").html("<tr><td>正在查询请稍后...</td></tr>");
+					},
+					dataType:"json",
+					data:{
+						pagenum:num,
+						pageSize:5
+					},
+					success:function(data,textStatus){
+
+						console.log("ok");
+						console.log(data.data);
+						if(data.code==200){
+							renderData(data);
+						}else{
+							alert("网络故障");
+						}
+					}
+				});
+			}      
+		});
+	} ,
+	error:function(XMLHttpRequest,textStatus,errorThrown){
+		$("#chengjilist").html("<tr><td>网络故障，请刷新一次</td></tr>");
+	}    
+
+
+	})
+}
+
+function renderData(data){
+		// console.log(data);
+	  var str = "";
+	  $.each(data.data,function(key,value){
+	  	str += "<tr><td>"+(key+1)+"</td>;"
+	  		console.log(data);
+	  	$.each(value,function(i,item){
+	  		if(i == "id"){
+
+	  		str += "<td style='display:none;'>"+item+"</td>";
+	  		}else{
+	  		str += "<td>"+item+"</td>";
+
+	  		}
+
+	  	
+	  	})
+	  	str+="<td><a class='sui-btn btn-samll btn-warning' href='chengji-edit.php?kid="+value.id+"'>修改</a>&nbsp;&nbsp;<a class='sui-btn btn-samll btn-danger' href='api5.php?action=result_del&kid="+value.id+"'>删除</a></td>";
+	  	str += "</tr>";
+   
+
+	  })
+	$("#chengjilist").html(str);
+}
+
+</script>

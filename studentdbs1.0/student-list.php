@@ -22,41 +22,15 @@
 					<th>照片</th>
 					<th>姓名</th>
 					<th>操作</th>
-				</tr>
-				<!-- <tr>
-					<td>1</td>
-					<td>B01</td>
-					<td>HTML+CSS基础</td>
-					<td><a class="sui-btn btn-small btn-warning">编辑</a>&nbsp;<a class="sui-btn btn-small btn-danger">修改</a></td>
-				</tr> -->
+				</tr>			
 <?php 
-// 	$pagesize = 5;//每页显示5条
-// 	$sql = "select 学号,班号,性别,出生日期,手机号,姓名,照片 from 学生 limit ".($pagenum-1)*$pagesize.",".$pagesize ;
-// 	// die($sql);
-// 	$result = mysqli_query($conn,$sql);
-// 	if( mysqli_num_rows($result)>0){
-// 	while($a = mysqli_fetch_assoc($result)){
-// 	$arrClass[] = $a;
 
-// 	}
-// }
-// print_r($arrClass);
-	/*
-	array(
-		0 = array(
-			"课程编号" => "B01",
-			"课程名" => "HTML+css基础"
-		),
-
-	)
-	 */
-	  $pageAmount = ceil(allList("学生")/$pagesize) ;//最大页数=ceil(总页数/每页条数)
-
+	 $pageAmount = ceil(allList("学生")/$pagesize) ;//最大页数=ceil(总页数/每页条数)
 	 $arrClass = pageList($pagenum,$pagesize,"学生");
 	//根据结果生成表格页面
 	foreach ($arrClass as $key => $value){
 		echo "<tr><td>".($key+1)."</td><td>{$value['学号']}</td><td>{$value['班号']}</td>";
-		// <td>{$value['性别']}</td>
+		
 		if( $value['性别'] == 0 ){
 			echo "<td>女</td>";
 		}else{
@@ -67,9 +41,7 @@
 		<a href='student-del.php?kid={$value['学号']}' class='sui-btn btn-small btn-danger'>删除</a></td></tr>";
 	}
 
-
 	?>
-
 			</table>
 			<p>总计：条&nbsp;
 			 <a href="?pagenum=1">首页</a>&nbsp;

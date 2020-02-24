@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>登录页</title>
+	<title>注册页</title>
 	 <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
    
      <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -53,7 +53,7 @@
 	<form id="form1" >
 		<div class="form-group">
 			<label for="email" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
-			<input type="text" name="email" id="email" class="form-control" style="display: inline-block; width:200px" >
+			<input type="email" name="email" id="email" class="form-control" style="display: inline-block; width:200px" >
 			<span></span>
 		</div>
 		<div class="form-group">
@@ -73,7 +73,7 @@
 		</div>
 		<div class="form-group">
 			<label for="verify" style="display: inline-block;width:150px;text-align: right; ">验证码：</label>
-			<input type="text" id="verify" name="verify" class="form-control" style="display: inline-block; width:200px" >
+			<input type="text" id="verify" name="verify" class="form-control" style="display: inline-block; width:200px" autocomplete="off">
 			<span id="verify_code" class="form-control" style="display: inline-block; width:100px; cursor:pointer; text-align: center;">验证码</span>
 			<span></span>
 		</div>
@@ -96,8 +96,10 @@
 </html>
 <script>
  var arr = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u",
-  "v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","l","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
- var arr1 = [];
+  "v","w","x","y","z"];
+ 
+ var str = "";
+ play();
  function play(){
  	for (var i = 0; i < 4; i++) {
  		var random = Math.floor(Math.random()*arr.length);
@@ -129,14 +131,34 @@ window.onload = function(){
 		}
 
 	})
+	// 注册的各个框获取焦点，右侧显示框消失。
+	$("#email").on("focus",function(){
+		$(this).next().html("").hide();
+	})
+	$("#user").on("focus",function(){
+		$(this).next().html("").hide();
+	})
+	$("#password").on("focus",function(){
+		$(this).next().html("").hide();
+	})
+	$("#repassword").on("focus",function(){
+		$(this).next().html("").hide();
+	})
+	$("#verify").on("focus",function(){
+		$(this).next().next().html(" ").hide();
+	})
+	$("#key").on("focus",function(){
+		$(this).next().html("").hide();
+	})
 	// 判断邮箱格式是否正确，以及是否被注册过。
 	$("#email").on("blur",function(){
-		 console.log($(this).val().length);
+		
 		var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-		if($(this).val().length==0){
-			$("#email").next().html("不能为空").css("color","red");
+		if($(this).val().length == 0){
+			
+			$(this).next().show().html("不能为空").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"180px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		}else if(!reg.test($(this).val())){
-			$("#email").next().html("邮箱格式不正确").css("color","red");
+			$(this).next().show().html("邮箱格式不正确").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"180px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		}else{
 		$.ajax({
 			url:"api.php?action=checkemail&email="+$(this).val(),
@@ -148,9 +170,9 @@ window.onload = function(){
 			success:function(data,statusText){
 				
 				if(data.code ==200){
-					$("#email").next().html(data.msg).css("color","green");
+					$("#email").next().html(data.msg).css({"color":"yellow","background-color":"skyblue","display":"inline-block","width":"180px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 				}else{
-					$("#email").next().html(data.msg);
+					$("#email").next().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"180spx","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 				}
 			}
 
@@ -165,9 +187,11 @@ window.onload = function(){
 		if(reg_user.test(user_val)){
 			$(this).next().html(" ");
 		}else{
-			$(this).next().html(" 请输入有效的用户名").css("color","red");
+			$(this).next().html(" 请输入有效的用户名").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"180px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		}
 	})
+
+	
 	//密码判断
 	$("#password").on("blur",function(){
 	var reg1=/^[a-z+A-Z+0-9+]{3,15}$/;
@@ -175,9 +199,10 @@ window.onload = function(){
 		if(reg1.test(psw_val)){
 			$(this).next().html(" ");
 		}else{
-			$(this).next().html("请输入有效的密码").css("color","red");
+			$(this).next().show().html("请输入有效的密码").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"180px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		}
 	})
+	
 	//密码确认
 	$("#repassword").on("blur",function(){
 		var psw_val = $("#password").val();
@@ -185,9 +210,10 @@ window.onload = function(){
 		if(psw_val==repsw_val){
 			$(this).next().html(" ");
 		}else{
-			$(this).next().html("请输入,密码不一致").css("color","red");
+			$(this).next().show().html("请输入,密码不一致").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"180px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		}
 	})
+	
 	//验证码验证
 	$("#verify").on("blur",function(){
 		var verify_code = $("#verify_code").text();
@@ -197,12 +223,13 @@ window.onload = function(){
 		if(verify_code==verify){
 			$(this).next().next().html(" ");
 		}else if(verify.length == 0){
-			$(this).next().next().html("请输入验证码 ").css("color","red");
+			$(this).next().next().html("请输入验证码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 		}else{
-			$(this).next().next().html("验证码不一致").css("color","red");
+			$(this).next().next().html("验证码不一致").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
 
 		}
 	})
+	
 
 	$("button[type=submit]").on("click",function(event){
   event.preventDefault();
@@ -211,27 +238,36 @@ window.onload = function(){
    type:"post",
    dataType:"json",
    data:$("#form1").serializeArray(),
-   beforeSend:function(){
+   beforeSend:function(data){
     //提交前检查是否为空
-    var $email = $("#email").val();
-    var $user = $("#user").val();
-    var $password = $("#password").val();
-    var $repassword = $("#repassword").val();
+    var $email = $("#email").val().length;
+    var $user = $("#user").val().length;
+    var $password = $("#password").val().length;
+    var $repassword = $("#repassword").val().length;
     var $verify = $("#verify").val();
-    var $key = $("#key").val();
-    if($email.length==0&&$user.length==0&&$password.length==0&&$repassword.length==0&&$verify.length==0&&$key.length==0){
-    	alert("不能为空");
-    	return false;
-    }else{
+    var $verify_code = $("#verify_code").text();
+    var $key = $("#key").val().length;
+    console.log($email);
+    console.log($user);
+    console.log($password);
+    console.log($verify);
+    console.log($key);
+    console.log( $verify);
+    console.log( $verify_code);
+    if($email>0&&$user>0&&$password>0&&$repassword>0&&$verify.length>0&&$key>0 && $verify == $verify_code){
+  
     	return true;
+    }else{
+    	return false;
     }
 
    },
-   success:function(data){
+   success:function(data,textStatus){
    	console.log(data);
     if(data.code == 200){
-     window.location.href="login.html"
+     window.location.href="login.html";
     }else{
+    	alert("注册失败");
 
     }
    }

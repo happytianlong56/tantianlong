@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>登录页</title>
+	<title>密码提示页</title>
 	 <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
    
      <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -14,34 +14,62 @@
      <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
      <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
+<style>
+        body{
+         	background-image:url('vote-project/images/01.jpg'); 
+         	background-repeat: no-repeat;
+         	background-size:cover;
+         }
+		.wrap{
+			width:800px;
+			height:500px;
+			margin:200px 410px;
+			overflow: hidden;
+		}
+		/*用户注册与登录按钮*/
+		.botton{
+			width: 200px;
+			height:50px;
+		    margin: 45px auto 20px auto;
+		}
+    	/*表单部分*/
+    	form{
+    		height: 500px;
+    		padding-left:131px;
+    	}
+    	label{
+    		color:#fff;
+    	}
+		.submit_login{
+			margin-left: 149px;
+			margin-top:25px;
+		}
+ </style>
 <body>
-	<div class="botton" style="position: absolute;top:48px;left:42%;">
+	<div class="botton" style="position: absolute;top:170px;left:42%;">
 			<a href="sign.html" class="an_niu btn btn-primary" >用户注册</a>
 			<a href="login.html" class="an_niu btn btn-primary" ">用户登录</a>
 	</div>
 	<!-- 登录表单 -->
-	<form action="" method="" style="width:800px;height:500px; margin-left:22%;margin-top:100px; border:1px solid blue; padding: 50px 0 0 150px;" >
+	<form id="form1" style="width:800px;height:500px; margin-left:22%;margin-top:120px;  padding: 150px 0 0 150px;" >
 		<div class="form-group">
 			<label for="verify" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
-			<input type="text" id="user_email" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
+			<input type="text" name="email" id="email" class="form-control" style="display: inline-block; width:200px"/>
 
 		</div>
 		<div class="form-group" >
 			<label for="Prompt" style="display: inline-block;width:150px;text-align: right; ">密码提示问题：</label>
-			<select name="" id="Prompt" class="form-control" style="display: inline-block; width:200px" autocomplete="off">
-				<option value="">你的小学在哪里上？</option>
-				<option value="">你最好朋友姓名？</option>
-				<option value="">你的父母的生日？</option>
-				<option value="">你的母亲的生日？</option>
+			<select name="Prompt" id="Prompt" class="form-control" style="display: inline-block; width:200px" ">
+				
 			</select>
 		</div>
 		<div class="form-group">
 			<label for="key" style="display: inline-block;width:150px;text-align: right; ">答案密码：</label>
-			<input type="text" id="key" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
+			<input type="text" name="key" id="key" class="form-control" style="display: inline-block; width:200px" />
 		</div>
 		<div class="form-group">
 			<label for="verify" style="display: inline-block;width:150px;text-align: right; ">验证码：</label>
-			<input type="text" id="verify" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
+			<input type="text" id="verify" class="form-control" style="display: inline-block; width:200px" />
 			<span id="verify_code" class="form-control" style="display: inline-block; width:100px; cursor:pointer; text-align: center;">验证码</span>
 		</div>
 		<button type="submit" class="btn btn-primary" style="margin-left:170px; width:150px; text-align: center;">登  录</button>
@@ -51,21 +79,82 @@
 </body>
 </html>
 <script>
+	window.onload = function(){
+
+
  var arr = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u",
-  "v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","l","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+  "v","w","x","y","z"];
  function play(){
  	str=""; //保存随机的字符串
  	for (var i = 0; i < 4; i++) {
  		var random = Math.floor(Math.random()*arr.length);
- 		str += arr[random] + " ";
+ 		str += arr[random];
  	}
 	 verify_code.innerHTML = str;
  }
+ play();
  // 点击验证码，进行切换。
 verify_code.onclick = function(){
 	
 	play();
 } 
+$.ajax({
+	url:"api.php?action=getQuestion",
+	type:"get",
+	dataType:"json",
+	beforeSend:function(){
 
+	},
+	success:function(data,statusText){
+		var str = "";
+		$.each(data.data,function(i,v){
+			str += "<option value="+v.id+">"+v.question+"</option>"
+		})
+		$("#Prompt").html(str);
+	}
 
+})
+
+//用户发送密码提示问题请求验证
+$("button[type=submit]").on("click",function(event){
+	
+    event.preventDefault();
+    $.ajax({
+        url:"api.php?action=tishi",
+        type:"post",
+        dataType:"json",
+        data:$("#form1").serializeArray(),
+        beforeSend:function(){
+        //请求数据之前判断表单内容是否为空
+      	var email = $("#email").val().length;
+        var Prompt = $("#Prompt").val().length;
+        var key = $("#key").val().length;
+		var verify = $("#verify").val();
+		var verify_code = $("#verify_code").text();	
+		
+		
+		if(email>0 && Prompt >0 && key >0 && verify==verify_code ){
+			return true;
+		}else {
+			return false;
+		}
+        },
+        success:function(data){
+
+        	console.log(data);
+        	if(data.code == 200){
+        		//如果跳转php
+        		window.location.href = "index.php";
+        		//如果跳转html,就把data中的email和nickname生成cookie
+				var  tt = new Date();
+				tt.setTime(tt.getTime()+30*60*1000);//tt为30天后的未来时间
+				document.cookie = "name="+data.data.email+";expires="+tt.toGMTString();
+				document.cookie = "nickname="+data.data.nickname+";expires="+tt.toGMTString();
+        		
+        }
+    }
+    });
+})
+
+}
 </script>

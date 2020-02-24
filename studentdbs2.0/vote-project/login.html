@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>登录页</title>
-	 <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css"> -->
+	 
    	  <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
  	<script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 
@@ -51,16 +51,16 @@
 				<a href="login.html" class="an_niu btn btn-primary" ">用户登录</a>
 		</div>
 		<!-- 登录表单 -->
-		<form action="form1" method="" >
+		<form action="form1" method="">
 			<div class="form-group">
-				<label for="verify" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
-				<input type="text" name="email" id="email" class="form-control" style="display: inline-block; width:200px" autocomplete="off"/>
-
+				<label for="email" style="display: inline-block;width:150px;text-align: right; ">用户邮件：</label>
+				<input type="text" name="email" id="email" class="form-control" style="display: inline-block ;width:200px" >
+				<span></span>
 			</div>
 			<div class="form-group">
-				<label for="verify" style="display: inline-block;width:150px;text-align: right; ">密码：</label>
+				<label for="password" style="display: inline-block;width:150px;text-align: right; ">密码：</label>
 				<input type="text" name="password" id="password" class="form-control" style="display: inline-block ;width:200px" >
-				
+				<span></span>
 			</div>
 			<div class="form-group">
 				<label for="verify" style="display: inline-block;width:150px;text-align: right; ">验证码：</label>
@@ -80,16 +80,18 @@
 </html>
 <script>
 
+
 	//随机生成验证码
 	 var arr = [0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u",
-	  "v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","l","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-	 var arr1 = [];
+	  "v","w","x","y","z"];
+	
+	 var str = "";
+	 play();
 	 function play(){
 	 	for (var i = 0; i < 4; i++) {
 	 		var random = Math.floor(Math.random()*arr.length);
 	 		str += arr[random] ;
 	 	}
-
 		 verify_code.innerHTML = str;
 		
 	 }
@@ -97,27 +99,39 @@
 		 str="";
 		play();
 	} 
+	//邮箱输入框获取焦点后，报错显示框为空
+	$("#email").on("focus",function(){
+         $(this).next().html("").hide();
+          	})
+	//密码框获得焦点后，报错显示框为空
+	$("#password").on("focus",function(){
+          
+        $(this).next().html("").hide();  				
+          	})
+
 	$("#verify").on("focus",function(){
-		$(this).next().next().html(" ");
+		$(this).next().next().html(" ").hide();
 	})
 	//验证码验证
 	$("#verify").on("blur",function(){
 		var verify_code = $("#verify_code").text();
 		var verify = $(this).val();
 		if(verify_code==verify){
-			$(this).next().next().html(" ");
-		
+			$(this).next().next().html(" ").hide();
 		}else if(verify.length == 0){
-			$(this).next().next().html("请输入验证码 ").css("color","red");
+			$(this).next().next().show().html("请输入验证码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+			
 			
 		}else{
-			$(this).next().next().html("验证码不一致").css("color","red");
+			$(this).next().next().show().html("验证码不一致").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+		
 			
 
 		}
 	})
 
 $("button[type=submit]").on("click",function(event){
+	
     event.preventDefault();
     $.ajax({
         url:"api.php?action=login",
@@ -125,38 +139,45 @@ $("button[type=submit]").on("click",function(event){
         dataType:"json",
         data:"email="+$("#email").val()+"&password="+$("#password").val(),
         beforeSend:function(){
-        	// $(this).attr("disabled","disabled");
-          //验证码验证
-		$("#verify").on("blur",function(){
-			var verify = $(this).val();
-			var verify_code = $("#verify_code").text();
-			if(verify_code==verify){
-				$(this).next().next().html(" ");
-					return true;
-			}else if(verify.length == 0){
-				$(this).next().next().html("请输入验证码 ").css("color","red");
-				alert("请输入验证码");
-				return false;
-				
-			}else{
-				$(this).next().next().html("验证码不一致").css("color","red");
-				alert("输入的验证码不一致");
-				return false;
-			}
-		})
+        //请求数据之前判断表单内容是否为空
+      	var email = $("#email").val();
+        var password = $("#password").val();
+		var verify = $("#verify").val();
+		var verify_code = $("#verify_code").text();	
+		
+		
+		if(email.length>0 && password.length >0 && verify.length >0 && verify==verify_code ){
+			return true;
+		}else if(verify.length ==0 ){
+			$("#verify").next().next().show().html("请输入验证码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+			return false;
+		}else if(password.length ==0 ){
+			$("#password").next().show().html("请输入密码 ").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+			return false;
+		}else if(email.length ==0 ){
+			$("#email").next().show().html("请输入用户名").css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+			return false;
+		}
         },
         success:function(data){
+
         	console.log(data);
         	if(data.code == 200){
         		//如果跳转php
-        		window.location.href = "index.php";
+        		window.location.href = "index.html";
         		//如果跳转html,就把data中的email和nickname生成cookie
 				var  tt = new Date();
 				tt.setTime(tt.getTime()+30*60*1000);//tt为30天后的未来时间
 				document.cookie = "name="+data.data.email+";expires="+tt.toGMTString();
 				document.cookie = "nickname="+data.data.nickname+";expires="+tt.toGMTString();
         		//window.location.href = "index.php";
-        }
+          }else if(data.code == 20001){
+          	$("#password").next().show().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+
+          }else if(data.code == 20004){
+          	$("#email").next().show().html(data.msg).css({"color":"red","background-color":"skyblue","display":"inline-block","width":"150px","height":"35px","text-align":"center","font":"18px/30px '微软雅黑'"});
+          	
+          } 
     }
     });
 })

@@ -25,7 +25,7 @@
 		  </div>
 		  <div class="content">
 			<p class="sui-text-xxlarge my-padd">班级修改</p>
-			<form class="sui-form form-horizontal sui-validate" method="get" action="banzhuren-update.php">
+			<form id="form1" class="sui-form form-horizontal sui-validate" >
             <div class="control-group">
 			    <label for="inputEmail" class="control-label">班主任ID</label>
 			    <div class="controls">
@@ -35,7 +35,10 @@
 			<div class="control-group">
 			    <label for="inputEmail" class="control-label">班主任姓名：</label>
 			    <div class="controls">
+			      
+				
 			      <input type="text" name="bzr_name" value="<?php echo $arrClass['班主任姓名'];?>"  class="input-large input-fat" placeholder="输入教室" data-rules="required|minlength=2|maxlength=15">
+			    
 			    </div>
 			  </div>
 			  <div class="control-group">
@@ -57,3 +60,34 @@
 <?php
 include("foot.php");
 ?>
+<script type="text/javascript">
+window.onload = function(){
+	$("input[type=submit").on("click",function(event){
+		event.preventDefault();
+	$.ajax({
+		url:"api4.php?action=bzr_update",
+		type:"get",
+		dataType:"json",
+		data:$("#form1").serializeArray(),
+		beforeSend:function(){
+		
+		},
+		complete:function(){
+
+		},
+		success:function(data,textStatus){
+			console.log(data);
+			if(data.code ==200){
+				alert("修改成功");
+				window.location.href = "banzhuren-list.php";
+			}else{
+				alert("修改失败");
+			}
+		}
+
+
+	})
+	})
+}
+
+</script>

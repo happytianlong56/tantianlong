@@ -1,6 +1,6 @@
 <?php
-// include("head.php");
-require("head.php");
+include("head.php");
+// require("head.php");
 ?>
 		<div class="sui-layout">
 		  <div class="sidebar">

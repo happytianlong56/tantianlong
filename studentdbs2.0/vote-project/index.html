@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,51 @@
     <meta name="screen-orientation" content="portrait">
     <meta name="x5-orientation" content="portrait">
     <link rel="stylesheet" href="css/wap.css"/>
+    <style>
+    .left{
+        width: 125px;
+        height: 165px;
+        margin: 38px 0 0 8px;
+        float:left;
+    }
+    .left img{
+        width: 100%;
+        height: 100%;
+    }
+    .right{
+        width: 250px;
+        height: 270px;
+       /* border: 1px solid red;*/
+        margin: 16px 0 0;
+        float:right;
+    }
+    .right li{
+        font:20px/28px "微软雅黑";
+        margin-top:15px;
+
+    }
+    .clearfix:before,.clearfix:after{
+        content:"";
+        display: block;
+        clear:both;
+    }
+    .info1{
+    position: absolute;
+    width: 405px;
+    height: 375px;
+    border-radius: 6%;
+    border: 1px solid red;
+    background-color: yellowgreen;
+    overflow: hidden;
+    display: none;
+    top:0px;
+    left:0px;
+    z-index: 100;
+        }
+    .another{
+        display: none;
+    }
+</style>
 </head>
 <body>
 
@@ -17,36 +63,7 @@
         <h2 class="p-tt" style="background-image: url(./images/tt01.png);">投资候选人</h2>
         <div class="investors cont" id="candidates">
         <ul class="list clearfix">
-		<!-- 候选人列表  -->
-           <!--  <li class="citem js-vote-item" id="6">
-                <div class="item-poster js-intro-item">
-                    <img class="lazy" src="upload/20170919104140_kdE1.jpg">
-                    <div class="caption">
-                        <p class="txt-name">苏国新</p>
-                        <p class="txt-position">中信集团业务协同部总经理</p>
-                    </div>
-                 </div>  
-                    <div class="vote js-vote-btn" data-id="6" data-switch="off">
-                        <span class="icon-zan">X</span>
-                        <span class="num">21316</span>
-                    </div>
-            </li>   
-
-
-            <li class="citem js-vote-item" id="6">
-                <div class="item-poster js-intro-item">
-                    <img class="lazy" src="upload/20170919104140_kdE1.jpg">
-                    <div class="caption">
-                        <p class="txt-name">苏国新</p>
-                        <p class="txt-position">中信集团业务协同部总经理</p>
-                    </div>
-                 </div>  
-                    <div class="vote js-vote-btn" data-id="6" data-switch="off">
-                        <span class="icon-zan">X</span>
-                        <span class="num">21316</span>
-                    </div>
-
-            </li> -->
+	
         </ul>
     </div>
     </div>
@@ -62,14 +79,29 @@
     <div class="pop-foot"><span class="submit-code btn-ok">支持</span></div>
 </div>
 <!--SHARE POPUP end-->
+<!-- 点击图片显示本人信息(姓名、职务、简历等信息) -->
+    <div class="info">
+        <div class="info1 clearfix"   >
+           <!--  <div class="left"><img src="{{data.pic}}" alt=""></div>
+            <div class="right">
+                <ul>
+                    <li>姓名：{{data.name}}</li>
+                    <li>职位：{{data.position}}</li>
+                    <li>个人简历：{{data.caseshow}}</li>
+                </ul>
+            </div> -->
+        </div>
+    </div>
 </body></html>
 <script type="text/javascript" src="http://g.alicdn.com/sj/lib/jquery.min.js"></script>
 <script src="http://cdn.staticfile.org/artTemplate.js/3.0.1/template.js"></script>
 <script>
-console.log($);
-window.onload = function(){
+
+window.onload = function(){                 
+
+    console.log(document.cookie);
     $.ajax({
-        url:"http://localhost:8082/vote-project/api.php?action=candidate",
+        url:"api.php?action=candidate",
         type:"get",
         dataType:"json",
         beforeSend:function(){
@@ -85,21 +117,111 @@ window.onload = function(){
                 $(".list").html(str);
                 //投票
                 $("span.icon-zan").on("click",function(){
-                    var icon_zans = document.querySelectorAll("span.icon-zan");
-                    console.log(icon_zans);
-                    for (var i = 0; i < icon_zans.length; i++) {
-                        var index = $(this).index(i);
-                        console.log(index);
-                        
-                    }
-                    $.ajax({
-                        url:"http://localhost:8082/vote-project/api.php?action=toupiao",
-                        // data:"num = "+data[].votenum +","
-                    })        
-                        
+                    var num1 = Number($(this).next().text());
+                    var $id = $(this).parent().attr("data-id");
+                    var voter = getCookie("name");
+                    //判断用户是否登录
+                     if(voter == null){
+                        if(confirm("请先登录")){
+                         window.location.href = "login.html";
+                        }else{
+                        window.location.href = "?";
+                        }
+                     }
 
-                         })
+                    //先判断这名用户是否点赞过
+                    $.ajax({
+                        url:"api.php?action=is_zan&id="+$id+"&voter="+voter,
+                        type:"get",
+                        dataType:"json",
+                        beforeSend:function(){
+                           
+                        },
+                        success:function(data,textStatus){
+                            
+                            console.log(data);
+                            if(data.code == 200){
+                                //检测到该用户没有点赞过，可以投票并将票数添加到数据库，页面进行渲染
+                                $.ajax({
+                                    url:"api.php?action=toupiao",
+                                    type:"get",
+                                    dataType:"json",
+                                    data:"votenum="+ ++num1+"&id="+$id+"&voter="+voter,
+                                    beforeSend:function(){
+                                       
+                                    },
+                                    success:function(data,textStatus){
+                                        $(".num").text(data.data);
+                                        console.log(data);
+                                        if(data.code == 200){
+                                           $(".share-popup").css("display","block");
+                                           $(".btn-close").on("click",function(){
+                                            $(this).parent().css("display","none");
+                                           })
+
+                                        }
+                                    },
+                                    complete:function(){
+                                    } 
+                                })  
+
+                            }else{
+                                alert(data.msg);
+                            }
+                        },
+                        complete:function(){
+                        } 
+                    })
+       
+                 })
+                //3、点击候选人图片，弹窗显示候选人姓名、职务、简历等信息
+                 $(".item-poster").on("click",function(){
+                   var $offset = $(this).parent().offset();
+                   var $top = $offset.top;
+                   var $left = $offset.left;
+                 var $id = $(this).parent().attr("id");
+                 console.log($id);
+                $.ajax({
+                    url:"api.php?action=xinxi&id="+$id,
+                    type:"post",
+                    dataType:"json",
+                    beforeSend:function(){
+
+                    },
+                    success:function(data,textStatus){
+                        console.log(data);
+                        var JSONdata1 = data;
+                         console.log($offset);
+                    $.get("template2.html",function(data,textStatus){
+                    //编译模板
+                    var  render = template.compile(data);
+                    var str = render(JSONdata1);
+
+                    $(".info").html(str);
+                    $(".info1").css("display","block");
+                    $(".info1").css({"top":$top+"px","left":$left+180+"px"});
+
+                    $(".info1").on("click",function(){
+                      
+                       $(this).css("display","none");
+                    })
+
+
+
+                    })
+                    },
+
+
+                })
+                })
+
+
+
+
+
             })
+
+
 
 
     } ,
@@ -108,6 +230,17 @@ window.onload = function(){
     }    
     })
     //点赞投票
+    //读取指定键的cookie封装函数：
+    function getCookie(name){
+    
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg)){
+    return unescape(arr[2]);
+    }else{
+    return null;}
+    }
+    
+
     
 
  }

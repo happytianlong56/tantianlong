@@ -33,8 +33,8 @@ $phone = $_REQUEST['phone'];
 $sname = $_REQUEST['sname'];
 
 
-$sql = "insert into 学生(学号,班号,性别,出生日期,手机号,照片,姓名) value('".$xuehao."','".$banhao."','".$sex."','".$birthday."','".$phone."','{$newname}','".$sname."') ";
-
+$sql = "insert into 学生(学号,班号,性别,出生日期,手机号,照片,姓名) value('".$xuehao."','".$banhao."',".$sex.",'".$birthday."','".$phone."','{$newname}','".$sname."') ";
+// die($sql);
 $result  = mysqli_query($conn,$sql);
 if($result){
 	echo "<script>alert('数据添加成功!');</script>";

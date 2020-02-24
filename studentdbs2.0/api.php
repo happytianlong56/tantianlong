@@ -52,21 +52,7 @@ $action = $_REQUEST['action'];
  		die(json_encode($responseArr));
  		break;
     //action = xuesheng 请求学生列
-    case "xuesheng" :
-    $pagenum = empty($_REQUEST['pagenum'])?1:$_REQUEST['pagenum'];
-    $pagesize = empty($_REQUEST['pagesize'])?5:$_REQUEST['pagesize'];
-    $allnum = allList("学生");//得到总记录条数
-    $pageAmount = ceil(allList("学生")/$pagesize) ;//最大页数=ceil(总页数/每页条数)
-    $arrClass = pageList($pagenum,$pagesize,"学生");
-    //给resoponsArr数组添加一项
-
-    $responseArr["allnum"] =  $allnum ; //总条数
-    $responseArr["data"] = $arrClass;   // 获取的5条数据
-    //关闭数据库连接
-    mysqli_close($conn);
-    //将数组转换成json发送前端
-    die(json_encode($responseArr));
-    break;
+    
     //注册端口
     case "sign":
     //接收客户发过来的请求
@@ -77,13 +63,20 @@ $action = $_REQUEST['action'];
     $key = $_REQUEST["key"];
     $showtime=date("Y-m-d H:i:s");
     $logintime = $showtime;
-    $lasttime = $showtime;
-    $sql = "insert into `user`( `email`, `nickname`, `password`, `question`, `answer`, `logintime`, `lasttime`) values('{$email}','{$user}','{$password}','{$Prompt}','{$key}','{$logintime}','{$lasttime}') ";
-  
+    // $lasttime = $showtime;
+    $sql = "insert into `user`( `email`, `nickname`, `password`, `question`, `answer`, `logintime`, `lasttime`) values('{$email}','{$user}','{$password}','{$Prompt}','{$key}',now(),now()) ";
+  // die($sql);
     $result = mysqli_query($conn,$sql);
-    //关闭数据库连接
+    if($result){
+      $responseArr["code"] = 200;
+      $responseArr["msg"] = "注册成功";
+
+    }else{
+      $responseArr["code"] = 201;
+      $responseArr["msg"] = "注册失败";
+    }
+      //关闭数据库连接
     mysqli_close($conn);
-    //将数组转换成json发送前端
     die(json_encode($responseArr));
     break;
     //登录接口
@@ -122,50 +115,47 @@ $action = $_REQUEST['action'];
     //将数组转换成json发送前端
     die(json_encode($responseArr));
     break;
-    //学生录入接口
-    case "student_input":
- 
-      if($_FILES["file1"]["error"]>0){
-        echo "上传不成功".$_FILES["file1"]["error"];
+    //忘记密码提示接口
+    case "tishi":
+      $email = $_REQUEST["email"];
+      $Prompt = $_REQUEST["Prompt"];
+      $key = $_REQUEST["key"];
+   
+   
+      //首先根据用户的email查是否至少一条记录
+      $sql = "select * from user where email='{$email}'";
+      $result = mysqli_query($conn,$sql);
+      if(mysqli_num_rows($result)>0){
+      //如果邮箱正确，在判断密码是否相等
+        $arr = mysqli_fetch_assoc($result);
+        
+        if($Prompt == $arr["question"] && $key == $arr["answer"]){
+          //邮件密码都对
+          $_SESSION["email"] = $arr["email"];
+          $_SESSION["nickname"] = $arr["nickname"];
+          //假如用户有头像，页创建session保存
+          $responseArr["data"] = array(
+              "email" =>$arr["email"],
+              "nickname" => $arr["nickname"]
+
+          );
+        }else{
+          //提示邮件不对
+          $responseArr["code"] = 20001;
+          $responseArr["msg"] = "答案错误";
+        }
+
       }else{
-        if( $_FILES["file1"]["type"] == "image/gif" || 
-      $_FILES["file1"]["type"] == "image/jpeg" ||
-      $_FILES["file1"]["type"] == "image/png" || 
-      $_FILES["file1"]["type"] == "image/pjpeg" &&
-      $_FILES["file1"]["size"]<2097152
-    ){
-      $randomStr = date('YmdHis');
-      $houzhui = substr($_FILES["file1"]["name"],-4,4);
-      $newname = "upload/".$randomStr.$houzhui;//相对路径
-      $filename = __DIR__."/".$newname;//绝对路径
-      //参数1：临时文件的路径，参数2：最终存放的路径
-      move_uploaded_file($_FILES["file1"]["tmp_name"],$filename);
-    }else{
-      echo "上传的文件格式或大小不对";
-    }
-
+        //提示邮件不对
+        $responseArr["code"] = 20004;
+        $responseArr["msg"] = "邮件不存在";
       }
-$xuehao = $_REQUEST['xuehao'];
-$banhao = $_REQUEST['banhao'];
-$sex = $_REQUEST['sex'];
-$birthday = $_REQUEST['birthday'];
-$phone = $_REQUEST['phone'];
-$sname = $_REQUEST['sname'];
-$sql = "insert into 学生(学号,班号,性别,出生日期,手机号,照片,姓名) value('".$xuehao."','".$banhao."','".$sex."','".$birthday."','".$phone."','{$newname}','".$sname."') ";
-$result  = mysqli_query($conn,$sql);
-if($result){
-  $responseArr["code"] = 200;
-  $responseArr["msg"] = "数据添加成功";
-  
-}else{
-  $responseArr["code"] = 201;
-  $responseArr["msg"] = "数据添加失败";
-  echo "数据添加失败！".mysqli_error($conn);
-}
-mysqli_close($conn);
-die(json_encode($responseArr));
-
-break;
+      //关闭数据库连接
+    mysqli_close($conn);
+    //将数组转换成json发送前端
+    die(json_encode($responseArr));
+    break;
+    
 //学生信息修改；
 case "student_update":
 $xuehao = $_REQUEST["st_xuehao"];
@@ -186,7 +176,7 @@ $result = mysqli_query($conn,$sql);
 if($result){
   $responseArr["code"] = 200;
   $responseArr["msg"] = "修改成功";
-header("Refresh:1;url=student-list.php");
+
 
 }else{
   $responseArr["code"] = 201;
@@ -196,6 +186,11 @@ header("Refresh:1;url=student-list.php");
 mysqli_close($conn);
 die(json_encode($responseArr));
 break;
+
+
+
+
+
 
  }
 
